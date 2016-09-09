@@ -10,8 +10,6 @@
 #define KBD_STACMD 0x64
 #define COM1 0x3F8
 
-extern void test_div_0();
-
 /*
  * this is the main kernel loop, not much happening here.
  * its a mess
@@ -29,12 +27,7 @@ void kmain(multiboot_info_t *mbd_ptr) {
   mask_irq(0x01);
   init_serial(COM1);
   bootmsg();
-  char memorynum[15];
-  unsigned int uppermem = (unsigned) mbd_ptr->mem_upper;
-  itoa(uppermem,memorynum,10);
-  kout(memorynum);
-  kout("kB of memory detected\n");
-  //memory_detect(**mbd_ptr);
+  memory_detect(mbd_ptr);
   while (1) {
     asm("hlt");
   }

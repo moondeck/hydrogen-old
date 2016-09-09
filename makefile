@@ -1,6 +1,8 @@
 
 AS = nasm
 CC = i686-elf-gcc
+LD = i686-elf-ld
+
 kernel_x86:
 	$(AS) -f elf32 kernelld.asm -o kloaderasm.o
 	$(AS) -f elf32 arch/i386/irq.asm -o irqasm.o
@@ -13,7 +15,6 @@ kernel_x86:
 	$(CC)	-ffreestanding -c arch/i386/irq.c -o irq.o -std=gnu11 -O2 -W -Wall -Werror
 	$(CC)	-ffreestanding -c kernel/libc/libc.c -o libc.o -std=gnu11 -O2 -W -Wall -Werror
 	$(CC)	-ffreestanding -c kernel.c -o kernel.o -std=gnu11 -O2 -W -Wall -Werror
-	$(CC)	-T kernel.ld  -nostdlib  -o kernel.mkern kloaderasm.o memory.o irqasm.o idt.o serial.o irq.o kernelio.o paging.o kernel.o pagingasm.o libc.o -O2 -W -Wall -Werror
-	rm *.o
+	$(CC)	-T kernel.ld  -nostdlib  -o kernel.mkern kloaderasm.o memory.o irqasm.o idt.o serial.o irq.o kernelio.o paging.o kernel.o pagingasm.o libc.o
 clean:
 	rm -f kernel.mkern

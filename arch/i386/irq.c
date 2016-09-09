@@ -8,7 +8,9 @@
 #define PIC_ENDOFINT 0x20
 
 void remap_PIC(char offset, char offset2) {
-  unsigned char mask1;b
+  unsigned char mask1;
+  unsigned char mask2;
+
 
   mask1 = inb(PIC_A_DATA);
   mask2 = inb(PIC_B_DATA);
