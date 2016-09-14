@@ -3,7 +3,7 @@
 language: c
 
 sudo: required
-compiler: i686-elf-gcc
+compiler: gcc
 
 before_install:
   - export PREFIX="$HOME/opt/cross"
