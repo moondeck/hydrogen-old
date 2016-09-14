@@ -9,7 +9,7 @@ before_install:
   - export PREFIX="$HOME/opt/cross"
   - export TARGET=i686-elf
   - export PATH="$PREFIX/bin:$PATH"
-  - sudo apt-get install -y libmpfr-dev libmpc-dev libgmp-dev nasm build-essentials
+  - sudo apt-get install -y libmpfr-dev libmpc-dev libgmp-dev nasm build-essential
   - wget http://ftp.gnu.org/gnu/binutils/binutils-2.27.tar.gz
   - tar -xf binutils-2.27.tar.gz
   - mkdir binutils-build

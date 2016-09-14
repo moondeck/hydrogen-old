@@ -18,3 +18,6 @@ kernel_x86:
 	$(CC)	-T kernel.ld  -nostdlib  -o kernel.mkern kloaderasm.o memory.o irqasm.o idt.o serial.o irq.o kernelio.o paging.o kernel.o pagingasm.o libc.o
 clean:
 	rm -f kernel.mkern
+
+install:
+	echo "You wish you could install it like that"

@@ -22,8 +22,7 @@ void kmain(multiboot_info_t *mbd_ptr) {
   remap_PIC(0x20, 0x28);
 
   // TODO: Proper keyboard init
-
-  // memory_detect(mbd_ptr);
+  
   mask_irq(0x01);
   init_serial(COM1);
   bootmsg();
