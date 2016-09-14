@@ -20,6 +20,7 @@ install:
   - ../binutils-2.27/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
   - make
   - make install
+  - cd ..
   - wget ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-6.2.0/gcc-6.2.0.tar.gz
   - tar -xf gcc-6.2.0.tar.gz
   - mkdir gcc-build
@@ -29,6 +30,8 @@ install:
   - make all-target-libgcc
   - make install-gcc
   - make install-target-libgcc
+  - cd ..
+
 
 script:
   - make
