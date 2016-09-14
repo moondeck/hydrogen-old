@@ -6,6 +6,9 @@ sudo: required
 compiler: gcc
 
 before_install:
+  - export MAKEFLAGS="-j4"
+
+install:
   - export PREFIX="$HOME/opt/cross"
   - export TARGET=i686-elf
   - export PATH="$PREFIX/bin:$PATH"
@@ -26,3 +29,6 @@ before_install:
   - make all-target-libgcc
   - make install-gcc
   - make install-target-libgcc
+
+script:
+  - make
