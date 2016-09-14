@@ -27,9 +27,8 @@ global kbd_wait2
 section .data
 begin:
 	cli
-	;push ebx
-  ;mov esp, stack
-  xor ebx,ebx
+  mov esp, stack
+  push ebx
 	call kmain          ;calls the main kernel function in kernel.c
 	cli
 	hlt                 ;halts the cpu

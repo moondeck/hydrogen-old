@@ -19,32 +19,32 @@ unsigned int charcount = 0;
  * kernel I/O library
  */
 
- void outb(u16int port, u8int value) {  // 8bit port output
+ void outb(unsigned short port, unsigned char value) {  // 8bit port output
    asm("outb %1, %0" : : "dN"(port), "a"(value));
  }
 
- void outw(u16int port, u16int value) {  // 16bit port output
+ void outw(unsigned short port, unsigned short value) {  // 16bit port output
    asm("outw %1, %0" : : "dN"(port), "a"(value));
  }
 
- void outl(u16int port, u32int value) {  // 32bit port output
+ void outl(unsigned short port, unsigned int value) {  // 32bit port output
    asm("outl %1, %0" : : "dN"(port), "a"(value));
  }
 
- u8int inb(u16int port) {  // 8bit port input
-   u8int ret;
+unsigned char inb(unsigned short port) {  // 8bit port input
+   unsigned char ret;
    asm("inb %1, %0" : "=a"(ret) : "Nd"(port));
    return ret;
  }
 
- u16int inw(u16int port) {  // 16bit port input
-   u16int ret;
+unsigned short inw(unsigned short port) {  // 16bit port input
+   unsigned short ret;
    asm("inw %1, %0" : "=a"(ret) : "Nd"(port));
    return ret;
  }
 
- u32int inl(u16int port) {  // 32bit port input
-   u32int ret;
+unsigned int inl(unsigned short port) {  // 32bit port input
+   unsigned int ret;
    asm("inl %1, %0" : "=a"(ret) : "Nd"(port));
    return ret;
  }
@@ -91,7 +91,7 @@ void halt_system_err(char *err) {
   kout("cause: ");
   kout(err);
   asm("cli");
-  int eax,ebx,ecx,edx;
+  unsigned int eax,ebx,ecx,edx;
   char eax_str[16],ebx_str[16],ecx_str[16],edx_str[16];
   asm("nop"
   :"=b"(eax));
