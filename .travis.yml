@@ -1,10 +1,14 @@
 #cross-compiler compilation code taken form OSDev wiki.
 
+language: c
+
+compiler: i686-elf-gcc
+
 before_build:
   - export PREFIX="$HOME/opt/cross"
   - export TARGET=i686-elf
   - export PATH="$PREFIX/bin:$PATH"
-  - apt-get install libmpfr-dev libmpc-dev libgmp-dev
+  - apt-get install libmpfr-dev libmpc-dev libgmp-dev nasm
   - wget http://ftp.gnu.org/gnu/binutils/binutils-2.27.tar.gz
   - tar -xf binutils-2.27.tar.gz
   - mkdir binutils-build
