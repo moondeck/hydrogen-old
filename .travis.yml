@@ -1,4 +1,5 @@
 #cross-compiler compilation code taken form OSDev wiki.
+#i know the script is crap, but i am lazy
 
 language: c
 
