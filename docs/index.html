@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    div.upper_text {
+      font-size: 30px;
+      text-align: center;
+      font-family: helvetica;
+    }
+    div.main_text {
+      text-decoration: none;
+      text-align: left;
+      font-size: 22px;
+      font-family: helvetica;
+    }
+    div.bottom {
+      width: 100%;
+      bottom: 0%;
+      position: fixed;
+      font-size: 15px;
+      font-family: helvetica;
+    }
+    div.bottom_link {
+      position: fixed;
+      bottom: 5%;
+    }
+  </style>
+  <head>
+    <meta charset="utf-8">
+    <title>Hydrogen Operating System</title>
+  </head>
+  <body>
+    <div class="upper_text">
+      <h1>Hydrogen</h1>
+      <hr>
+    </div>
+    <div class="main_text">
+      <p>
+        Hydrogen is an operating system targeted for x86, amd64 and ARM architectures. Currently, it only supports x86, but amd64 and ARM will follow.
+      </p>
+      <p>
+        It has GDT, IDT, and uses serial instead of VGA text output. Because the main target is embedded computers and servers, support for VGA is not a main focus.
+      </p>
+      <p>
+        Memory management, paging and scheduling are the main focus for now. Network drivers, disk drivers and FS drivers are a second priority. Then there is other shiny stuff, like VGA, graphics acceleration (will most likely use AMD)
+        and USB support (which probably wont be supported)
+      </p>
+      <p>
+        If you are a chipset/hardware manufacturer, and can provide datasheets (for networking ICs, graphics, USB chipsets, etc.), please, contact me.
+      </p>
+    </div>
+    <div class="bottom_link">
+      <p>
+        Get Hydrogen on <a href="http://github.com/m00nd3ck/hydrogen">GitHub</a>!
+      </p>
+    </div>
+    <div class="bottom">
+      <p>
+        <hr>
+        Build Status (thanks to <a href="https://travis-ci.org/m00nd3ck/hydrogen">Travis CI</a>):
+        <img src="https://travis-ci.org/m00nd3ck/hydrogen.svg?branch=master" alt="Build Status" />
+      </p>
+    </div>
+  </body>
+</html>
