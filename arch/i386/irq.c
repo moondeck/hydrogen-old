@@ -33,8 +33,15 @@ void remap_PIC(char offset, char offset2) {
 }
 
 void mask_irq(unsigned char irq_mask) {
+  unsigned short port;
   unsigned char mask;
-  mask = (inb(0x21) || irq_mask);
+  if(irq_mask < 8) {
+        port = PIC_A_DATA;
+    } else{
+        port = PIC_B_DATA;
+        irq_mask -= 8;
+  }
+  mask = inb(port) | (1 << irq_mask);
   outb(0x21, mask);  // MASK DA INTEROOPTS
 }
 

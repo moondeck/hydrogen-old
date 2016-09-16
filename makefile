@@ -11,13 +11,11 @@ CLEAR = \033[0m
 kernel_x86:
 	clear
 
-	#assembly part
 	@echo "[ $(RED)ASM$(CLEAR) ]" $@
 	@$(AS) -f elf32 kernelld.asm -o kloaderasm.o
 	@$(AS) -f elf32 arch/i386/irq.asm -o irqasm.o
 	@$(AS) -f elf32 arch/i386/paging.asm -o pagingasm.o
 
-	#compiling stuff
 	@echo "[ $(GREEN)GCC$(CLEAR) ]" $@
 	@$(CC)	-ffreestanding -c arch/i386/serial.c -o serial.o -std=gnu11 -O2 -W -Wall -Werror
 	@$(CC)	-ffreestanding -c arch/i386/paging.c -o paging.o -std=gnu11 -O2 -W -Wall -Werror
@@ -28,7 +26,6 @@ kernel_x86:
 	@$(CC)	-ffreestanding -c kernel/libc/libc.c -o libc.o -std=gnu11 -O2 -W -Wall -Werror
 	@$(CC)	-ffreestanding -c kernel.c -o kernel.o -std=gnu11 -O2 -W -Wall -Werror
 
-	#link dat shit
 	@echo "[ $(YELLOW)LINK$(CLEAR) ]" $@
 	@$(CC)	-T kernel.ld  -nostdlib  -o kernel.mkern kloaderasm.o memory.o irqasm.o idt.o serial.o irq.o kernelio.o paging.o kernel.o pagingasm.o libc.o
 

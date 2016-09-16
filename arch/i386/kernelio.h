@@ -1,3 +1,5 @@
+#include "../../kernel/libc/libc.h"
+
 typedef unsigned int u32int;
 typedef int s32int;
 typedef unsigned short u16int;

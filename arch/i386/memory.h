@@ -1,5 +1,7 @@
 #include "kernelio.h"
 #include "multiboot.h"
+#include "kernelio.h"
+#include "../../kernel/libc/libc.h"
 
 void gdt_install();
 void gdt_set_gate(int num, unsigned long base, unsigned long limit,

@@ -20,16 +20,16 @@ idt_load:							;loads the idt
 	sti
 	ret
 
-exception_0x00:
+exception_0x00:	;division by 0
 	pusha
 	cld
 
 	call div_by_0
-	
+
 	popa
 	iret
 
-interrupt_0x20:
+interrupt_0x20:	;PIT interrupt
 	pusha
 	cld
 
@@ -38,7 +38,7 @@ interrupt_0x20:
 	popa
 	iret
 
-interrupt_0x21:
+interrupt_0x21:	;Keyboard interrupt
 	pusha
 	cld
 
@@ -47,7 +47,7 @@ interrupt_0x21:
 	popa
 	iret
 
-interrupt_0x24:
+interrupt_0x24: ;serial port interrupt (not working for now)
 	pusha
 	cld
 

@@ -1,5 +1,4 @@
 #include "kernelio.h"
-#include "../../kernel/libc/libc.h"
 
 extern void idt_load();
 

@@ -1,6 +1,4 @@
 #include "memory.h"
-#include "kernelio.h"
-#include "../../kernel/libc/libc.h"
 
 struct gdt_entry {
   unsigned short limit;

@@ -1,10 +1,4 @@
-#include "arch/i386/kernelio.h"
-#include "arch/i386/memory.h"
-#include "arch/i386/idt.h"
-#include "arch/i386/irq.h"
-#include "arch/i386/paging.h"
-#include "arch/i386/serial.h"
-#include "kernel/libc/libc.h"
+#include "kernel.h"
 
 #define KBD_DAT 0x60
 #define KBD_STACMD 0x64
@@ -12,7 +6,7 @@
 
 /*
  * this is the main kernel loop, not much happening here.
- * its a mess
+ * its a messb
  */
 
 void kmain(multiboot_info_t *mbd_ptr) {
@@ -22,8 +16,6 @@ void kmain(multiboot_info_t *mbd_ptr) {
   remap_PIC(0x20, 0x28);
 
   // TODO: Proper keyboard init
-  
-  mask_irq(0x01);
   init_serial(COM1);
   bootmsg();
   memory_detect(mbd_ptr);
