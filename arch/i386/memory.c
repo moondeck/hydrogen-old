@@ -20,7 +20,7 @@ struct gdt_ptr gp;
 extern void gdt_flush();
 
 void _add_gdt_entry(int num, unsigned long base, unsigned long limit,
-                  unsigned char access, unsigned char gran) {
+                    unsigned char access, unsigned char gran) {
   gdt[num].base_low = base;
   gdt[num].base_middle = (base >> 16);
   gdt[num].base_high = (base >> 24);
@@ -30,39 +30,40 @@ void _add_gdt_entry(int num, unsigned long base, unsigned long limit,
 }
 
 void gdt_install() {
-
   gp.limit = (sizeof(struct gdt_entry) * 3) - 1;
-  gp.base = (unsigned int)  &gdt;
+  gp.base = (unsigned int)&gdt;
   _add_gdt_entry(0, 0, 0, 0, 0);
   _add_gdt_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
   _add_gdt_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
   gdt_flush();
 }
 
-void memory_detect(multiboot_info_t *mbd) {
-  char foobar[15];
-  multiboot_memory_map_t* mmap = (multiboot_memory_map_t*) mbd->mmap_addr;
-  //itoa(mbd->mmap_addr,foobar,16);
-  //kout("multiboot structures at:\n");
-  while(mmap < (multiboot_memory_map_t*) mbd->mmap_addr + mbd->mmap_length && mmap->size != 0) {
+void memory_detect(multiboot_info_t* mbd) {
+  char text_buffer[20];
+  multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mbd->mmap_addr;
+  itoa(mbd->mem_upper, text_buffer, 10);  // grab the value, convert it to text.
+  kout("Upper memory (KiB): ");  // display the text part
+  kout(text_buffer);  // display the converted value from the buffer
+  kout("\n");  // go to a new line
+  while (mmap < (multiboot_memory_map_t*)(mbd->mmap_addr + mbd->mmap_length) &&
+         mmap->size == 20) {
     kout("type: ");
-    if(mmap->type == 1){
+    if (mmap->type == 1) {
       kout("free");
-    } else{
+    } else {
       kout("used");
     }
     kout("  address: ");
-    ltoa((unsigned) mmap->addr,foobar,16);
-    kout(foobar);
+    ltoa(mmap->addr, text_buffer, 16);
+    kout(text_buffer);
     kout("  length: ");
-    ltoa((unsigned) mmap->len,foobar,16);
-    kout(foobar);
+    ltoa(mmap->len, text_buffer, 16);
+    kout(text_buffer);
     kout("  ending address:");
-    ltoa((unsigned) (mmap->len + mmap->addr),foobar,16);
-    kout(foobar);
+    ltoa(mmap->len + mmap->addr, text_buffer, 16);
+    kout(text_buffer);
     kout("\n");
-		mmap = (multiboot_memory_map_t*) ( (unsigned int)mmap + mmap->size + sizeof(unsigned int) );
-	}
-  itoa((unsigned) mmap->size,foobar,10);
-  kout(foobar);
+    mmap = (multiboot_memory_map_t*)((unsigned int)mmap + mmap->size +
+                                     sizeof(mmap->size));
+  }
 }

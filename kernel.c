@@ -6,7 +6,7 @@
 
 /*
  * this is the main kernel loop, not much happening here.
- * its a messb
+ * its a mess
  */
 
 void kmain(multiboot_info_t *mbd_ptr) {
@@ -16,8 +16,9 @@ void kmain(multiboot_info_t *mbd_ptr) {
   remap_PIC(0x20, 0x28);
 
   // TODO: Proper keyboard init
+  mask_irq(0);
   init_serial(COM1);
-  bootmsg();
+  bootmsg(mbd_ptr);
   memory_detect(mbd_ptr);
   while (1) {
     asm("hlt");

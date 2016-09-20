@@ -34,7 +34,7 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel,
 
 void idt_install() {
   idtp.limit = (sizeof(struct idt_entry) * 256) - 1;
-  idtp.base =(unsigned) &idt;
+  idtp.base = (unsigned)&idt;
   mset((unsigned char*)idt, 0, sizeof(struct idt_entry) * 256);
   idt_set_gate(0x00, (unsigned)exception_0x00, 0x08, 0x8E);
   idt_set_gate(0x20, (unsigned)interrupt_0x20, 0x08, 0x8E);

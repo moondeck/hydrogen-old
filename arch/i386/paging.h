@@ -1,3 +1,4 @@
+#include "memory.h"
 #include "kernelio.h"
 
 //clean me up
