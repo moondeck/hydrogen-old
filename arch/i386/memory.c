@@ -54,13 +54,13 @@ void memory_detect(multiboot_info_t* mbd) {
       kout("used");
     }
     kout("  address: ");
-    ltoa(mmap->addr, text_buffer, 16);
+    lltoa(mmap->addr, text_buffer, 16);
     kout(text_buffer);
     kout("  length: ");
-    ltoa(mmap->len, text_buffer, 16);
+    lltoa(mmap->len, text_buffer, 16);
     kout(text_buffer);
     kout("  ending address:");
-    ltoa(mmap->len + mmap->addr, text_buffer, 16);
+    lltoa(mmap->len + mmap->addr, text_buffer, 16);
     kout(text_buffer);
     kout("\n");
     mmap = (multiboot_memory_map_t*)((unsigned int)mmap + mmap->size +
