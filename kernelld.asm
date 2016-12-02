@@ -18,7 +18,6 @@ extern page_dirs
 
 global idt_load
 extern idtp
-
 global interrupt
 
 global kbd_wait
@@ -27,7 +26,8 @@ global kbd_wait2
 section .data
 begin:
 	cli
-  mov esp, stack
+  mov ebp, stack
+  mov esp, stack_end
   push ebx
 	call kmain          ;calls the main kernel function in kernel.c
 	cli
@@ -49,4 +49,5 @@ flush2:
 
 section .bss
 stack:
-resb 0x1000					   ;stack
+resb 0x2000					   ;stack
+stack_end:

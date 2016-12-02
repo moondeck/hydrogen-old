@@ -1,6 +1,13 @@
 #include "libc.h"
 
-void memcpy() {}
+void memcpy(unsigned int *src,unsigned int *dest,unsigned int length) {
+  unsigned int count = 0;
+  for (count = 0; count != length; count++) {
+    *dest = *src;
+    src++;
+    dest++;
+  }
+}
 
 void *mset(unsigned char *dest, unsigned char val,
            int count) {  // mset function, sets count addresses starting from

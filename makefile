@@ -13,26 +13,28 @@ CLEAR = \033[0m
 kernel_x86:
 	clear
 
-	@echo "[ $(RED)ASM$(CLEAR) ]" $@
+	@echo "[ ASM ]" $@
 	@$(AS) -f elf32 kernelld.asm -o kloaderasm.o
 	@$(AS) -f elf32 arch/i386/irq.asm -o irqasm.o
-	@$(AS) -f elf32 arch/i386/paging.asm -o pagingasm.o
 
-	@echo "[ $(GREEN)GCC$(CLEAR) ]" $@
+	@echo "[ GCC ]" $@
 	@$(CC)	$(CFLAGS) -c arch/i386/serial.c -o serial.o
-	@$(CC)	$(CFLAGS) -c arch/i386/paging.c -o paging.o
 	@$(CC)	$(CFLAGS) -c arch/i386/kernelio.c -o kernelio.o
 	@$(CC)	$(CFLAGS) -c arch/i386/idt.c -o idt.o
 	@$(CC)	$(CFLAGS) -c arch/i386/memory.c -o memory.o
+	@$(CC)	$(CFLAGS) -c arch/i386/pfa.c -o pfa.o
 	@$(CC)	$(CFLAGS) -c arch/i386/irq.c -o irq.o
 	@$(CC)	$(CFLAGS) -c kernel/libc/libc.c -o libc.o
 	@$(CC)	$(CFLAGS) -c kernel.c -o kernel.o
 
-	@echo "[ $(YELLOW)LINK$(CLEAR) ]" $@
-	@$(CC) -nostdlib -T kernel.ld -o kernel.mkern kloaderasm.o memory.o irqasm.o idt.o serial.o irq.o kernelio.o paging.o kernel.o pagingasm.o libc.o -lgcc
+	@echo "[ LINK ]" $@
+	@$(CC) -nostdlib -T kernel.ld -o kernel.mkern kloaderasm.o kernel.o memory.o pfa.o irqasm.o idt.o serial.o irq.o kernelio.o libc.o -lgcc
 
 clean:
 	rm -f kernel.mkern
 
 install:
 	echo "You wish you could install it like that"
+
+loc:
+	git ls-files | xargs cloc

@@ -27,7 +27,7 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel,
                   unsigned char flags) {
   idt[num].base_low = base;
   idt[num].base_high = base >> 16;
-  idt[num].sel = (sel);
+  idt[num].sel = sel;
   idt[num].null = 0x00;
   idt[num].flags = flags;
 }

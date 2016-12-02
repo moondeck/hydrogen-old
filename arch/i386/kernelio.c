@@ -63,19 +63,20 @@ void initkbd() {  // initialises the keyboard
 }
 
 void bootmsg(multiboot_info_t *mbd) {  // boot message and some info
+
   if (mbd->cmdline != 0) {
     kout("booting command line: ");
     kout((char *)mbd->cmdline);
     kout("\n");
   }
+
   kout("welcome to hydrogen\n\n");
   kout("(C) Copyright 2015-2016 Moondeck\n");
   kout("Licensed under the Apache License, Version 2.0\n\n");
   kout("version 0.0.5 pre-alpha\n");
   kout("loaded by: ");
+
   kout((char *)mbd->boot_loader_name);
-  kout("\nboot device: ");
-  kout((char *)mbd->boot_device);
   kout("\n");
 }
 
@@ -91,24 +92,30 @@ void haltcpu(void) {
 
 void halt_system_err(
     char *err) {  // critical error, stops the system, until its restarted
+
+  unsigned int eax, ebx, ecx, edx;
+  char eax_str[16], ebx_str[16], ecx_str[16], edx_str[16];
+
   kout("\n\n\n[!!!     CRITICAL ERROR    !!!] \n\n");
   kout("cause: ");
   kout(err);
-  asm("cli");
-  unsigned int eax, ebx, ecx, edx;
-  char eax_str[16], ebx_str[16], ecx_str[16], edx_str[16];
+  asm("cli"); //disable interrupts so we dont get INTERRUPTED! (duh)
+
   asm("nop" : "=b"(eax));
   kout("\nEAX: 0x");
   kout(itoa(eax, eax_str, 16));
   kout("\n");
+
   asm("nop" : "=b"(ebx));
   kout("EBX: 0x");
   kout(itoa(ebx, ebx_str, 16));
   kout_char('\n');
+
   asm("nop" : "=b"(ecx));
   kout("ECX: 0x");
   kout(itoa(ecx, ecx_str, 16));
   kout_char('\n');
+
   asm("nop" : "=b"(edx));
   kout("EDX: 0x");
   kout(itoa(edx, edx_str, 16));

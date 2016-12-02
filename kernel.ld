@@ -2,18 +2,27 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(begin)
 SECTIONS
  {
-   . = 1M;
-   .text : ALIGN(4K) 
-   { 
-		*(.text) 
+   . = 0x1000000;
+   kernel_start = .;
+
+   .text : ALIGN(4K)
+   {
+		*(.text)
    }
-   .data : ALIGN(4K) 
-   { 
-                *(.rodata) 
-		*(.data) 
+   text_end = .;
+
+   .data : ALIGN(4K)
+   {
+    *(.rodata)
+		*(.data)
    }
-   .bss : ALIGN(4K) 
-   { 
-		*(.bss) 
+   data_end = .;
+
+   .bss : ALIGN(4K)
+   {
+		*(.bss)
    }
+   bss_end = .;
+
+   kernel_end = .;
  }
