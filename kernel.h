@@ -1,6 +1,9 @@
 #ifdef __i386__
   #define COM1 0x3F8
 
+  #include <cpuid.h>
+
+  #include "arch/i386/kbd.h"
   #include "arch/i386/kernelio.h"
   #include "arch/i386/memory.h"
   #include "arch/i386/pfa.h"

@@ -58,10 +58,6 @@ void kout(char *koutstring) {  // outputs a string (char array) to serial
   }
 }
 
-void initkbd() {  // initialises the keyboard
-  // TODO
-}
-
 void bootmsg(multiboot_info_t *mbd) {  // boot message and some info
 
   if (mbd->cmdline != 0) {
