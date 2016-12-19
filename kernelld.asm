@@ -24,8 +24,11 @@ global kbd_wait
 global kbd_wait2
 
 section .data
+
+  jmp begin
+
 begin:
-	cli
+  cli
   mov ebp, stack
   mov esp, stack_end
   push ebx

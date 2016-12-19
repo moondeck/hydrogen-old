@@ -41,20 +41,25 @@ unsigned int inl(unsigned short port) {  // 32bit port input
   return ret;
 }
 
-int com_rdy(int comport) {  // checks if the serial port is ready
-  return inb(comport + 5) & 0x20;
-}
-
 void kout_char(char koutchar) {  // outputs a character to serial
-  while (com_rdy(COM1) == 0)
-    ;
   outb(COM1, koutchar);
 }
 
 void kout(char *koutstring) {  // outputs a string (char array) to serial
+
   while (*koutstring != 0) {
-    kout_char(*koutstring);
-    koutstring++;
+
+    while (serial_io_wait() == 0);
+
+      if (*koutstring == '\n') {
+        kout_char('\n');
+        kout_char('\r');
+        koutstring++;
+
+      } else {
+        kout_char(*koutstring);
+        koutstring++;
+      }
   }
 }
 
