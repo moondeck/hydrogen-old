@@ -16,6 +16,7 @@ extern div_by_0
 extern idtp
 
 idt_load:							;loads the idt
+
 	lidt[idtp]					;idtp points to the idt
 	sti
 	ret

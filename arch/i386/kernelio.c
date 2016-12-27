@@ -66,7 +66,7 @@ void kout(char *koutstring) {  // outputs a string (char array) to serial
 void bootmsg(multiboot_info_t *mbd) {  // boot message and some info
 
   if (mbd->cmdline != 0) {
-    kout("booting command line: ");
+    kout("\nbooting command line: ");
     kout((char *)mbd->cmdline);
     kout("\n");
   }

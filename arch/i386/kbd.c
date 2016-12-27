@@ -18,7 +18,7 @@ void initkbd() {
   if (inb(KBD_DATA) == 0x55) {
     kout("keyboard controller test passed\n");
   } else {
-    halt_system_err("No keyboard controller detected, cannot continue");
+    kout("keyboard controller error, check your config!\nthis is normal on keyboard-less setups.\n");
   }
 
   while (inb(KBD_CMD) & (1 << 1)) ;

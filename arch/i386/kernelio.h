@@ -1,6 +1,8 @@
 #include "../../kernel/libc/libc.h"
 #include "multiboot.h"
 
+#include <stdint.h>
+
 typedef unsigned int u32int;
 typedef int s32int;
 typedef unsigned short u16int;
@@ -22,9 +24,9 @@ void outb(u16int port, u8int value);
 void outw(u16int port, u16int value);
 void halt_system_err(char *err);
 void bootmsg(multiboot_info_t *mbd);
-unsigned char inb(u16int port);
-unsigned short inw(u16int port);
-unsigned int inl(u16int port);
+unsigned char inb(unsigned short port);
+unsigned short inw(unsigned short port);
+unsigned int inl(unsigned short port);
 void haltcpu(void);
 void brk(void);
 void kout_mem(char *membase, char *sepchar, char *memlenght, char type);
