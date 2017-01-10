@@ -1,5 +1,8 @@
 #include "../../kernel/libc/libc.h"
-#include "multiboot.h"
+
+#ifdef __i386__
+    #include "multiboot.h"
+#endif
 
 #include <stdint.h>
 
@@ -13,6 +16,7 @@ typedef char s8int;
 #define KBD_DAT 0x60
 #define KBD_STACMD 0x64
 #define COM1 0x3F8
+#define serial_port COM1
 
 void kout(char *kouttext);
 void kout_char(char koutchar);
@@ -30,3 +34,4 @@ unsigned int inl(unsigned short port);
 void haltcpu(void);
 void brk(void);
 void kout_mem(char *membase, char *sepchar, char *memlenght, char type);
+

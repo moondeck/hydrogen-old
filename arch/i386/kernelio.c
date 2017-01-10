@@ -45,6 +45,10 @@ void kout_char(char koutchar) {  // outputs a character to serial
   outb(COM1, koutchar);
 }
 
+char serial_io_wait() {
+  return inb(serial_port + 5) & 0x20;
+}
+
 void kout(char *koutstring) {  // outputs a string (char array) to serial
 
   while (*koutstring != 0) {
@@ -72,9 +76,9 @@ void bootmsg(multiboot_info_t *mbd) {  // boot message and some info
   }
 
   kout("welcome to hydrogen\n\n");
-  kout("(C) Copyright 2015-2016 Moondeck\n");
+  kout("(C) Copyright 2015-2017 Moondeck\n");
   kout("Licensed under the Apache License, Version 2.0\n\n");
-  kout("version 0.0.5 pre-alpha\n");
+  kout("version 0.0.6 pre-alpha\n");
   kout("loaded by: ");
 
   kout((char *)mbd->boot_loader_name);

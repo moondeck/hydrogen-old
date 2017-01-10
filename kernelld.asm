@@ -29,8 +29,6 @@ section .data
 
 begin:
   cli
-  mov ebp, stack
-  mov esp, stack_end
   push ebx
 	call kmain          ;calls the main kernel function in kernel.c
 	cli
@@ -52,5 +50,5 @@ flush2:
 
 section .bss
 stack:
-resb 0x2000					   ;stack
+;resb 0x1000					   ;stack
 stack_end:

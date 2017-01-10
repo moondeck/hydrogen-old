@@ -12,7 +12,7 @@ struct idt_ptr {
   uint16_t pad;
   uint16_t size;
   uint32_t base;
-}__attribute__((packed));
+};
 
 struct idt_entry idt[256];
 struct idt_ptr idtp;

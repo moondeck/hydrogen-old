@@ -25,7 +25,6 @@ void pfa_init() {
     firstpf++;
   }
 
-  char test[10];
   pfa_stack_push(firstpf);
 
 

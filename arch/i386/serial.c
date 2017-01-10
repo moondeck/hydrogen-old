@@ -1,11 +1,5 @@
 #include "serial.h"
 
-#define COM1 0x3F8
-#define serial_port COM1
-
-char serial_io_wait() {
-  return inb(serial_port + 5) & 0x20;
-}
 
 void init_serial() {
   outb(serial_port + 1, 0x00);

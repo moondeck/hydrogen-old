@@ -58,10 +58,6 @@ void gdt_install() {
 
 
 void memory_detect(multiboot_info_t* mbd) {
-  char text_buffer[20];
-
-
-
   multiboot_memory_map_t* mmap = (multiboot_memory_map_t*) mbd->mmap_addr;
   char kerninfo[10];
 
@@ -78,30 +74,15 @@ void memory_detect(multiboot_info_t* mbd) {
   kout(kerninfo);
   kout("\n\n");
 
-  itoa(mbd->mem_upper, text_buffer, 10);    // grab the value, convert it to text.
+  itoa(mbd->mem_upper, kerninfo, 10);    // grab the value, convert it to text.
 
   kout("\nUpper memory (KiB): ");           // display the text part
-  kout(text_buffer);                        // display the converted value from the buffer
+  kout(kerninfo);                        // display the converted value from the buffer
   kout("\n");                               // go to a new line
 
   while (mmap < (multiboot_memory_map_t*)(mbd->mmap_addr + mbd->mmap_length) &&
          mmap->size == 20) {
-
-    kout("address: ");
-    lltoa(mmap->addr, text_buffer, 16);
-    kout(text_buffer);
-
-    kout("  length: ");
-    lltoa(mmap->len, text_buffer, 16);
-    kout(text_buffer);
-
-    kout("  ending address:");
-    lltoa(mmap->len + mmap->addr, text_buffer, 16);
-    kout(text_buffer);
-
-    kout("  type: ");
     if (mmap->type == 1) {
-      kout("free");
 
       multiboot_entry_stack[mbe_ptr].address = mmap->addr;
       multiboot_entry_stack[mbe_ptr].length = mmap->len;
@@ -114,18 +95,11 @@ void memory_detect(multiboot_info_t* mbd) {
           multiboot_entry_stack[mbe_ptr].length--;
         }
       }
-      kout("\n");
-      itoa(multiboot_entry_stack[mbe_ptr].length,text_buffer,16);
-      kout(text_buffer);
-
       mbe_ptr++;
 
 
     } else {
-      kout("used");
     }
-
-    kout("\n");
     mmap = (multiboot_memory_map_t*)((unsigned int)mmap + mmap->size +
                                      sizeof(mmap->size));
   }

@@ -17,6 +17,7 @@ extern idtp
 
 idt_load:							;loads the idt
 
+	cli
 	lidt[idtp]					;idtp points to the idt
 	sti
 	ret
