@@ -7,23 +7,24 @@ int kbssend     = (int) &bss_end;
 int kend_addr   = (int) &kernel_end;
 
 struct gdt_entry {
-  unsigned short limit;
-  unsigned short base_low;
-  unsigned char base_middle;
-  unsigned char access;
-  unsigned char granularity;
-  unsigned char base_high;
-} __attribute__((packed));
+  uint16_t limit;
+  uint16_t base_low;
+  uint8_t base_middle;
+  uint8_t access;
+  uint8_t granularity;
+  uint8_t base_high;
+};
 
 struct gdt_ptr {
-  unsigned short limit;
-  unsigned int base;
-} __attribute__((packed));
+  uint16_t pad;
+  uint16_t limit;
+  uint32_t base;
+};
 
 struct multiboot_entry {
   unsigned long long address;
   unsigned long long length;
-  unsigned char type;
+  uint32_t type;
 } __attribute__((packed));
 
 
@@ -33,10 +34,8 @@ struct gdt_ptr gp;
 struct multiboot_entry multiboot_entry_stack[32];
 unsigned int mbe_ptr = 0;
 
-extern void gdt_flush();
-
 void _add_gdt_entry(int num, unsigned long base, unsigned long limit,
-                    unsigned char access, unsigned char gran) {
+                    uint32_t access, uint32_t gran) {
   gdt[num].base_low = base;
   gdt[num].base_middle = (base >> 16);
   gdt[num].base_high = (base >> 24);

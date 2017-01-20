@@ -12,19 +12,19 @@ void kmain(multiboot_info_t *mbd_ptr) {
 
   remap_PIC(0x20, 0x28); //to be fixed
   idt_install();
-  PIC1_mask_irq(0);
+  //PIC1_mask_irq(1);
 
 
   // TODO: Proper keyboard init
   bootmsg(mbd_ptr);
   memory_detect(mbd_ptr);
-  initkbd();
+  //initkbd();
 
   //detect_cpu();
   //pfa_init();
 
   while (1) {
-    asm("hlt");
+    //asm("hlt");
   }
 
 }

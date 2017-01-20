@@ -36,7 +36,7 @@ begin:
 
 
 gdt_flush:            ;enables GDT
-    lgdt [gp]
+    lgdt [gp+2]
     mov eax,0x10			;pointer to the data segment
     mov ds,eax
     mov es,eax

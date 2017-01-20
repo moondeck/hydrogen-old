@@ -17,26 +17,27 @@ struct idt_ptr {
 struct idt_entry idt[256];
 struct idt_ptr idtp;
 
-void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel,
-                  unsigned char flags) {
-  idt[num].base_low = base;
-  idt[num].base_high = (base >> 16);
-  idt[num].sel = sel;
-  idt[num].null = 0x00;
-  idt[num].flags = flags;
+void idt_isr_gate(uint8_t interrupt, uint8_t flags, uint8_t selector, uint32_t address){
+  idt[interrupt].base_low = address;
+  idt[interrupt].base_high = (address >> 16);
+
+  idt[interrupt].sel = selector;
+
+  idt[interrupt].flags = (flags << 4) | 0b00001110;
+
 }
 
-void idt_install() {
-  idtp.size = (sizeof(struct idt_entry) * 256) - 1;
-  idtp.base = (uint16_t)&idt;
+void idt_install(){
+  char test[20];
 
+  itoa(&idt,test,16);
+  kout(test);
+  idtp.base = &idt;
+  idtp.size = sizeof(idt);
 
-  mset((uint8_t *)idt, 0, sizeof(struct idt_entry) * 256);
-
-  idt_set_gate(0x00, (unsigned long)exception_0x00, 0x08, 0x8E);
-  idt_set_gate(0x20, (unsigned long)interrupt_0x20, 0x08, 0x8E);
-  idt_set_gate(0x21, (unsigned long)interrupt_0x21, 0x08, 0x8E);
+  idt_isr_gate(0x20,0b1000,0x08,&interrupt_0x20);
 
   idt_load();
+  kout("lmao");
 
 }
