@@ -10,7 +10,9 @@
   #include "arch/i386/idt.h"
   #include "arch/i386/irq.h"
   #include "arch/i386/serial.h"
-  #include "kernel/libc/libc.h"
   #include "arch/i386/multiboot.h"
 
 #endif
+
+#include "kernel/libc/libc.h"
+#include "kernel/libc/kprintf.h"
