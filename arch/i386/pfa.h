@@ -1,3 +1,3 @@
 #include "memory.h"
 
-#define PFA_STACK_LENGTH 1024
+#define PFA_STACK_POINTER 0x110000

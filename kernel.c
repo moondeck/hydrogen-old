@@ -17,14 +17,13 @@ void kmain(multiboot_info_t *mbd_ptr) {
 
   // TODO: Proper keyboard init
   bootmsg(mbd_ptr);
-  memory_detect(mbd_ptr);
-  //initkbd();
+  memory_init(mbd_ptr);
+  initkbd();
 
   //detect_cpu();
-  //pfa_init();
-
+  pfa_init();
   while (1) {
-    //asm("hlt");
+    brk();
   }
 
 }

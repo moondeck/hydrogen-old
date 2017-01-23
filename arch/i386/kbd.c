@@ -16,9 +16,9 @@ void initkbd() {
 
   outb(KBD_CMD,0xAA);
   if (inb(KBD_DATA) == 0x55) {
-    kout("keyboard controller test passed\n");
+    kprintf("keyboard controller test passed\n");
   } else {
-    kout("keyboard controller error, check your config!\nthis is normal on keyboard-less setups.\n");
+    kprintf("keyboard controller error, check your config!\nthis is normal on keyboard-less setups.\n");
   }
 
   while (inb(KBD_CMD) & (1 << 1)) ;

@@ -2,7 +2,7 @@ OUTPUT_FORMAT(elf32-i386)
 ENTRY(begin)
 SECTIONS
  {
-   . = 0x1000000;
+   . = 0x100000;
    kernel_start = .;
 
    .text : ALIGN(4K)

@@ -4,49 +4,40 @@ int kprintf(const char *format, ... ) {
     va_list parameters;
     va_start(parameters, format);
 
-    char *text;
+    char *text_str;
+    char text_conversion[32];
     int number;
 
     while(*format != 0) {
+
         if(*format == '%') {
-            *format++;
+            format++;
+
             switch (*format) {
                 case 's':   //string
-                    text = va_arg(parameters, char *);
-                    kout(text);
+                    text_str = va_arg(parameters, char *);
+                    kout(text_str);
                     break;
 
-                case 'i':   //integer
+                case 'd':   //integer
                     number = va_arg(parameters, int);
-                    itoa(number, text, 10);
-                    kout(text);
+                    itoa(number, text_conversion, 10);
+                    kout(text_conversion);
                     break;
 
-                case 'l':   //long
-                    number = va_arg(parameters, long);
-                    ltoa(number, text, 10);
-                    kout(text);
-                    break;
-
-                case 'h':   //hex integer
+                case 'x':   //hex integer
                     number = va_arg(parameters, int);
-                    ltoa(number, text, 16);
-                    kout(text);
+                    itoa(number, text_conversion, 16);
+                    kout(text_conversion);
                     break;
                     
-                case 'b':   //binary integer
-                    number = va_arg(parameters, int);
-                    ltoa(number, text, 16);
-                    kout(text);
-                    break;
             }
 
-            
-
         } else{
+
             kout_char(*format);
         }
-        *format++;
+        format++;
     }
-
+    return 0;
 }

@@ -1,10 +1,10 @@
 #include "memory.h"
 
-int kstart_addr = (int) &kernel_start;
-int ktextend    = (int) &text_end;
-int kdataend    = (int) &data_end;
-int kbssend     = (int) &bss_end;
-int kend_addr   = (int) &kernel_end;
+int kstart_addr = (int)&kernel_start;
+int ktextend = (int)&text_end;
+int kdataend = (int)&data_end;
+int kbssend = (int)&bss_end;
+int kend_addr = (int)&kernel_end;
 
 struct gdt_entry {
   uint16_t limit;
@@ -22,20 +22,26 @@ struct gdt_ptr {
 };
 
 struct multiboot_entry {
-  unsigned long long address;
-  unsigned long long length;
+  uint32_t address;
+  uint32_t length;
   uint32_t type;
-} __attribute__((packed));
-
+};
 
 struct gdt_entry gdt[3];
 struct gdt_ptr gp;
 
-struct multiboot_entry multiboot_entry_stack[32];
-unsigned int mbe_ptr = 0;
+struct multiboot_entry free_mem_stack[32];
+struct multiboot_entry used_mem_stack[32];
+uint32_t fms_ptr = 0;
+uint32_t ums_ptr = 0;
 
-void _add_gdt_entry(int num, unsigned long base, unsigned long limit,
-                    uint32_t access, uint32_t gran) {
+uint32_t firstpf = (uint32_t)&kernel_end;
+
+void _add_gdt_entry(int num,
+                    unsigned long base,
+                    unsigned long limit,
+                    uint32_t access,
+                    uint32_t gran) {
   gdt[num].base_low = base;
   gdt[num].base_middle = (base >> 16);
   gdt[num].base_high = (base >> 24);
@@ -55,49 +61,40 @@ void gdt_install() {
   gdt_flush();
 }
 
+void memory_init(multiboot_info_t* mbd) {
+  while (firstpf % 4096)
+    firstpf++;
 
-void memory_detect(multiboot_info_t* mbd) {
-  multiboot_memory_map_t* mmap = (multiboot_memory_map_t*) mbd->mmap_addr;
-  char kerninfo[10];
+  multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mbd->mmap_addr;
 
-  kout("text: 0x");
-  itoa(ktextend,kerninfo,16);
-  kout(kerninfo);
-  kout("\n");
-  kout("data: 0x");
-  itoa(kdataend,kerninfo,16);
-  kout(kerninfo);
-  kout("\n");
-  kout("bss:  0x");
-  itoa(kbssend,kerninfo,16);
-  kout(kerninfo);
-  kout("\n\n");
-
-  itoa(mbd->mem_upper, kerninfo, 10);    // grab the value, convert it to text.
-
-  kout("\nUpper memory (KiB): ");           // display the text part
-  kout(kerninfo);                        // display the converted value from the buffer
-  kout("\n");                               // go to a new line
+  kprintf("text: 0x%x\ndata: 0x%x\nbss : 0x%x\n", ktextend, kdataend,
+          kbssend);  // See mom? No itoa()!
+  kprintf("Upper memory (KiB): %d\n",
+          mbd->mem_upper);  // display the total amount of memory
 
   while (mmap < (multiboot_memory_map_t*)(mbd->mmap_addr + mbd->mmap_length) &&
          mmap->size == 20) {
     if (mmap->type == 1) {
+      free_mem_stack[fms_ptr].address = mmap->addr;
 
-      multiboot_entry_stack[mbe_ptr].address = mmap->addr;
-      multiboot_entry_stack[mbe_ptr].length = mmap->len;
-      multiboot_entry_stack[mbe_ptr].type = mmap->type;
+      free_mem_stack[fms_ptr].length = mmap->len;
 
-      if (multiboot_entry_stack[mbe_ptr].address == 0x1000000) {
-        multiboot_entry_stack[mbe_ptr].address = firstpf;
+      free_mem_stack[fms_ptr].type = mmap->type;
 
-        if (!(multiboot_entry_stack[mbe_ptr].address + multiboot_entry_stack[mbe_ptr].length + 1 % 4096)) {
-          multiboot_entry_stack[mbe_ptr].length--;
-        }
+      if (free_mem_stack[fms_ptr].address == KERNEL_LOAD_POINT) {
+        free_mem_stack[fms_ptr].address = firstpf;
+        free_mem_stack[fms_ptr].length =
+            (free_mem_stack[fms_ptr].length -
+             (free_mem_stack[fms_ptr].address - KERNEL_LOAD_POINT));
       }
-      mbe_ptr++;
-
+      fms_ptr++;
 
     } else {
+      used_mem_stack[ums_ptr].address = mmap->addr;
+      used_mem_stack[ums_ptr].length = mmap->len;
+      used_mem_stack[ums_ptr].type = mmap->type;
+
+      ums_ptr++;
     }
     mmap = (multiboot_memory_map_t*)((unsigned int)mmap + mmap->size +
                                      sizeof(mmap->size));

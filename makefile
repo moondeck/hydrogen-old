@@ -25,6 +25,7 @@ kernel_x86:
 	@$(CC)	$(CFLAGS) -c arch/i386/pfa.c -o pfa.o
 	@$(CC)	$(CFLAGS) -c arch/i386/irq.c -o irq.o
 	@$(CC)	$(CFLAGS) -c arch/i386/kbd.c -o kbd.o
+	@$(CC)	$(CFLAGS) -c arch/i386/io.c -o io.o
 	#@$(CC)	$(CFLAGS) -c arch/i386/hwdetect.c -o hwdetect.o
 
 	@$(CC)	$(CFLAGS) -c kernel/libc/kprintf.c -o kprintf.o
@@ -32,7 +33,7 @@ kernel_x86:
 	@$(CC)	$(CFLAGS) -c kernel.c -o kernel.o
 
 	@echo "[ LINK ]" $@
-	@$(CC) -nostdlib -T kernel.ld -o kernel.mkern kloaderasm.o kernel.o irqasm.o idt.o kbd.o memory.o pfa.o serial.o irq.o kernelio.o libc.o kprintf.o -lgcc
+	@$(CC) -nostdlib -T kernel.ld -o kernel.mkern kloaderasm.o kernel.o irqasm.o idt.o kbd.o memory.o pfa.o serial.o irq.o kernelio.o io.o libc.o kprintf.o -lgcc
 
 clean:
 	rm -f kernel.mkern *.o

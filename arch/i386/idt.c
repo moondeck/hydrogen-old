@@ -28,16 +28,13 @@ void idt_isr_gate(uint8_t interrupt, uint8_t flags, uint8_t selector, uint32_t a
 }
 
 void idt_install(){
-  char test[20];
 
-  itoa(&idt,test,16);
-  kout(test);
-  idtp.base = &idt;
+  idtp.base = (uint32_t) &idt;
   idtp.size = sizeof(idt);
 
-  idt_isr_gate(0x20,0b1000,0x08,&interrupt_0x20);
+  idt_isr_gate(0x20,0b1000,0x08,(uint32_t) &interrupt_0x20);
+  idt_isr_gate(0x21,0b1000,0x08,(uint32_t) &interrupt_0x21);
 
   idt_load();
-  kout("lmao");
 
 }

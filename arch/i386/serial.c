@@ -18,3 +18,30 @@ void init_serial() {
 }
 
 void com_1_interrupt(void) { kout_char(inb(COM1)); }
+
+void kout_char(char koutchar) {  // outputs a character to serial
+  outb(COM1, koutchar);
+}
+
+char serial_io_wait() {
+  while (!(inb(serial_port + 5) & 0x20));
+  return 1;
+}
+
+void kout(char *koutstring) {  // outputs a string (char array) to serial
+
+  while (*koutstring != 0) {
+
+    serial_io_wait();
+
+      if (*koutstring == '\n') {
+        kout_char('\n');
+        kout_char('\r');
+        koutstring++;
+
+      } else {
+        kout_char(*koutstring);
+        koutstring++;
+      }
+  }
+}
