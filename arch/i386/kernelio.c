@@ -49,4 +49,6 @@ void halt_system_err(
 
   asm("nop" : "=d"(edx));
   kprintf("EDX: 0x%x\n", edx);
+
+  asm("hlt");
 }

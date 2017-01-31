@@ -1,7 +1,7 @@
 #include "libc.h"
 
-void memcpy(unsigned int *src,unsigned int *dest,unsigned int length) {
-  unsigned int count = 0;
+void memcpy(uint32_t *src,uint32_t *dest,uint32_t length) {
+  uint32_t count = 0;
   for (count = 0; count != length; count++) {
     *dest = *src;
     src++;
@@ -10,16 +10,16 @@ void memcpy(unsigned int *src,unsigned int *dest,unsigned int length) {
 }
 
 void *mset(unsigned char *dest, unsigned char val,
-           int count) {  // mset function, sets count addresses starting from
+           uint32_t count) {  // mset function, sets count addresses starting from
                          // *dest to val
-  for (int counter = 0; counter != count; counter++) {
+  for (uint32_t counter = 0; counter != count; counter++) {
     *dest = (unsigned char)val;
     dest++;
   }
   return 0;
 }
 
-char *itoa(int value, char *str, int base) {  // code taken from OSDev wiki
+char *itoa(uint32_t value, char *str, uint32_t base) {  // code taken from OSDev wiki
   char *rc;
   char *ptr;
   char *low;
@@ -55,7 +55,7 @@ char *itoa(int value, char *str, int base) {  // code taken from OSDev wiki
   return rc;
 }
 
-char *ltoa(long value, char *str, int base) {  // code taken from OSDev wiki
+char *ltoa(long value, char *str, uint32_t base) {  // code taken from OSDev wiki
   char *rc;
   char *ptr;
   char *low;
@@ -91,7 +91,7 @@ char *ltoa(long value, char *str, int base) {  // code taken from OSDev wiki
   return rc;
 }
 
-char *lltoa(long long value, char *str, int base) {  // code taken from OSDev wiki
+char *lltoa(long long value, char *str, uint32_t base) {  // code taken from OSDev wiki
   char *rc;
   char *ptr;
   char *low;

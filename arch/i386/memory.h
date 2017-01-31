@@ -4,6 +4,7 @@
 #include "../../kernel/libc/kprintf.h"
 
 #define KERNEL_LOAD_POINT 0x100000
+#define PFA_STACK_POINTER 0x110000
 
 extern int kernel_start;
 extern int kernel_end;
@@ -18,4 +19,4 @@ void gdt_set_gate(int num, unsigned long base, unsigned long limit,
                   unsigned char access, unsigned char gran);
 extern void gdt_flush();
 void memory_init(multiboot_info_t *mbd);
-void pfa_init();
+uint32_t pfa_init();

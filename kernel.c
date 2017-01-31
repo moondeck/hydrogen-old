@@ -10,20 +10,18 @@ void kmain(multiboot_info_t *mbd_ptr) {
   init_serial();
   gdt_install();
 
-  remap_PIC(0x20, 0x28); //to be fixed
+  remap_PIC(0x20, 0x28);
   idt_install();
   //PIC1_mask_irq(1);
 
-
-  // TODO: Proper keyboard init
-  bootmsg(mbd_ptr);
-  memory_init(mbd_ptr);
   initkbd();
 
-  //detect_cpu();
+  bootmsg(mbd_ptr);
+
+  memory_init(mbd_ptr);
   pfa_init();
   while (1) {
-    brk();
+    kprintf("%x\n",pfa_push(0x420420));
   }
 
 }

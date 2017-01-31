@@ -35,8 +35,8 @@ void kout(char *koutstring) {  // outputs a string (char array) to serial
     serial_io_wait();
 
       if (*koutstring == '\n') {
-        kout_char('\n');
         kout_char('\r');
+        kout_char('\n');
         koutstring++;
 
       } else {

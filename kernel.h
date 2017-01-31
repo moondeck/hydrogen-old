@@ -6,7 +6,6 @@
   #include "arch/i386/kbd.h"
   #include "arch/i386/kernelio.h"
   #include "arch/i386/memory.h"
-  #include "arch/i386/pfa.h"
   #include "arch/i386/idt.h"
   #include "arch/i386/irq.h"
   #include "arch/i386/serial.h"

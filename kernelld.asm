@@ -50,5 +50,4 @@ flush2:
 
 section .bss
 stack:
-;resb 0x1000					   ;stack
 stack_end:

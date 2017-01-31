@@ -1,10 +1,10 @@
 #include "memory.h"
 
-int kstart_addr = (int)&kernel_start;
-int ktextend = (int)&text_end;
-int kdataend = (int)&data_end;
-int kbssend = (int)&bss_end;
-int kend_addr = (int)&kernel_end;
+uint32_t kstart_addr = (uint32_t)&kernel_start;
+uint32_t ktextend = (uint32_t)&text_end;
+uint32_t kdataend = (uint32_t)&data_end;
+uint32_t kbssend = (uint32_t)&bss_end;
+uint32_t kend_addr = (uint32_t)&kernel_end;
 
 struct gdt_entry {
   uint16_t limit;
@@ -36,10 +36,11 @@ uint32_t fms_ptr = 0;
 uint32_t ums_ptr = 0;
 
 uint32_t firstpf = (uint32_t)&kernel_end;
+uint32_t *map = 0;
 
 void _add_gdt_entry(int num,
-                    unsigned long base,
-                    unsigned long limit,
+                    uint32_t base,
+                    uint32_t limit,
                     uint32_t access,
                     uint32_t gran) {
   gdt[num].base_low = base;
@@ -52,7 +53,7 @@ void _add_gdt_entry(int num,
 
 void gdt_install() {
   gp.limit = (sizeof(struct gdt_entry) * 3) - 1;
-  gp.base = (unsigned int)&gdt;
+  gp.base = (uint32_t)&gdt;
 
   _add_gdt_entry(0, 0, 0, 0, 0);
   _add_gdt_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
@@ -64,7 +65,6 @@ void gdt_install() {
 void memory_init(multiboot_info_t* mbd) {
   while (firstpf % 4096)
     firstpf++;
-
   multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mbd->mmap_addr;
 
   kprintf("text: 0x%x\ndata: 0x%x\nbss : 0x%x\n", ktextend, kdataend,
@@ -73,12 +73,10 @@ void memory_init(multiboot_info_t* mbd) {
           mbd->mem_upper);  // display the total amount of memory
 
   while (mmap < (multiboot_memory_map_t*)(mbd->mmap_addr + mbd->mmap_length) &&
-         mmap->size == 20) {
-    if (mmap->type == 1) {
+  mmap->size == 20) {
+    if (mmap->type == 1 && mmap->addr > 0x10000) {
       free_mem_stack[fms_ptr].address = mmap->addr;
-
       free_mem_stack[fms_ptr].length = mmap->len;
-
       free_mem_stack[fms_ptr].type = mmap->type;
 
       if (free_mem_stack[fms_ptr].address == KERNEL_LOAD_POINT) {
@@ -87,16 +85,65 @@ void memory_init(multiboot_info_t* mbd) {
             (free_mem_stack[fms_ptr].length -
              (free_mem_stack[fms_ptr].address - KERNEL_LOAD_POINT));
       }
+
+      kprintf("FREE addr: %x leng: %x type: %d\n",
+              free_mem_stack[fms_ptr].address, free_mem_stack[fms_ptr].length,
+              free_mem_stack[fms_ptr].type);
       fms_ptr++;
 
     } else {
       used_mem_stack[ums_ptr].address = mmap->addr;
       used_mem_stack[ums_ptr].length = mmap->len;
-      used_mem_stack[ums_ptr].type = mmap->type;
+      used_mem_stack[ums_ptr].type = 2;
+
+      kprintf("USED addr: %x leng: %x type %d\n",
+              used_mem_stack[ums_ptr].address, used_mem_stack[ums_ptr].length,
+              used_mem_stack[ums_ptr].type);
 
       ums_ptr++;
     }
-    mmap = (multiboot_memory_map_t*)((unsigned int)mmap + mmap->size +
+    mmap = (multiboot_memory_map_t*)((uint32_t)mmap + mmap->size +
                                      sizeof(mmap->size));
   }
+
+  fms_ptr = 0;
+  ums_ptr = 0;
+}
+
+uint32_t pfa_init() {
+  map = PFA_STACK_POINTER;
+  fms_ptr = 0;
+  struct multiboot_entry temp;
+
+  while(!(free_mem_stack[fms_ptr].length == 0)) {
+    temp = free_mem_stack[fms_ptr];
+    *map = temp.address;
+
+    while(temp.address < (free_mem_stack[fms_ptr].address + free_mem_stack[fms_ptr].length)) {
+
+      temp.address += 4096;
+
+      map++;
+      *map = temp.address;
+
+    }
+    kprintf("addrwrite: %x addr: %x\n",temp.address,map);
+    fms_ptr++;
+  }
+  return map;
+}
+
+uint32_t pfa_pop() {
+  if(map < PFA_STACK_POINTER) halt_system_err("PFA stack empty!");
+  uint32_t return_val = *map;
+  *map = 0;
+  map--;
+  return return_val;
+}
+
+uint32_t pfa_push(uint32_t pushvalue) {
+  if(map == PFA_STACK_POINTER + 0x400000) halt_system_err("PFA stack overflow!"); //max 32 bit pfa stack size
+  map++;
+  *map = pushvalue;
+  return map;
 }

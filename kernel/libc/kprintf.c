@@ -30,14 +30,24 @@ int kprintf(const char *format, ... ) {
                     itoa(number, text_conversion, 16);
                     kout(text_conversion);
                     break;
-                    
+                         
             }
 
-        } else{
+            format++;
 
-            kout_char(*format);
+        } else {
+
+            if(*format == '\n') {
+                kout_char('\r');
+                kout_char('\n');
+                format++;
+
+            } else {
+                kout_char(*format);
+                format++;
+                
+            }
         }
-        format++;
     }
     return 0;
 }
