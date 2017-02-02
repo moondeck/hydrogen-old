@@ -10,7 +10,7 @@ global interrupt_0x24
 
 extern pit_isr
 extern kbd_isr
-extern com_1_interrupt
+extern com1_isr
 extern div_by_0
 
 extern idtp
@@ -49,11 +49,11 @@ interrupt_0x21:	;Keyboard interrupt
 	popa
 	iret
 
-interrupt_0x24: ;serial port interrupt (not working for now)
+interrupt_0x24: ;serial port interrupt
 	pusha
 	cld
 
-	call com_1_interrupt
+	call com1_isr
 
 	popa
 	iret

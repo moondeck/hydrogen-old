@@ -52,3 +52,8 @@ void kbd_isr(void) {
   kout("keyboard interrupt\n");
   outb(PIC_A, PIC_ENDOFINT);
 }
+
+void com1_isr(void) {
+  kout_char(inb(COMPORT));
+  outb(PIC_A, PIC_ENDOFINT);
+}

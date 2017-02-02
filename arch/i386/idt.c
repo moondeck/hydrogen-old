@@ -34,6 +34,7 @@ void idt_install(){
 
   idt_isr_gate(0x20,0b1000,0x08,(uint32_t) &interrupt_0x20);
   idt_isr_gate(0x21,0b1000,0x08,(uint32_t) &interrupt_0x21);
+  idt_isr_gate(0x24,0b1000,0x08,(uint32_t) &interrupt_0x24);
 
   idt_load();
 

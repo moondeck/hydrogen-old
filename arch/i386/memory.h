@@ -4,7 +4,9 @@
 #include "../../kernel/libc/kprintf.h"
 
 #define KERNEL_LOAD_POINT 0x100000
-#define PFA_STACK_POINTER 0x110000
+#define PFA_STACK_POINTER 0x120000
+
+typedef uint32_t pfptr_t;
 
 extern int kernel_start;
 extern int kernel_end;

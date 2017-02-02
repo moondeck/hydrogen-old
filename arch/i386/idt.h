@@ -10,3 +10,5 @@ extern void idt_load();
 extern void exception_0x00();
 extern void interrupt_0x20();
 extern void interrupt_0x21();
+extern void interrupt_0x24();
+

@@ -12,7 +12,7 @@ void kmain(multiboot_info_t *mbd_ptr) {
 
   remap_PIC(0x20, 0x28);
   idt_install();
-  //PIC1_mask_irq(1);
+  PIC1_mask_irq(1);
 
   initkbd();
 
@@ -21,7 +21,7 @@ void kmain(multiboot_info_t *mbd_ptr) {
   memory_init(mbd_ptr);
   pfa_init();
   while (1) {
-    kprintf("%x\n",pfa_push(0x420420));
+    brk();
   }
 
 }

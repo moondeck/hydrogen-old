@@ -1,7 +1,7 @@
 #include "io.h"
 
 #define COM1 0x3F8
-#define serial_port COM1
+#define COMPORT COM1
 
 void com_1_interrupt(void);
 void init_serial();

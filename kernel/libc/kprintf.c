@@ -20,14 +20,26 @@ int kprintf(const char *format, ... ) {
                     break;
 
                 case 'd':   //integer
-                    number = va_arg(parameters, int);
+                    number = va_arg(parameters, uint32_t);
                     itoa(number, text_conversion, 10);
                     kout(text_conversion);
                     break;
 
                 case 'x':   //hex integer
-                    number = va_arg(parameters, int);
+                    number = va_arg(parameters, uint32_t);
                     itoa(number, text_conversion, 16);
+                    kout(text_conversion);
+                    break;
+
+                case 'l':   //64 bit integer
+                    number = va_arg(parameters, uint64_t);
+                    ltoa(number, text_conversion, 10);
+                    kout(text_conversion);
+                    break;
+
+                 case 'X':   //hex 64 int integer
+                    number = va_arg(parameters, uint64_t);
+                    ltoa(number, text_conversion, 16);
                     kout(text_conversion);
                     break;
                          

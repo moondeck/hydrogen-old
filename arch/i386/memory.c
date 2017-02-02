@@ -22,10 +22,10 @@ struct gdt_ptr {
 };
 
 struct multiboot_entry {
-  uint32_t address;
-  uint32_t length;
+  uint64_t address;
+  uint64_t length;
   uint32_t type;
-};
+}__attribute__((packed));
 
 struct gdt_entry gdt[3];
 struct gdt_ptr gp;
@@ -63,8 +63,6 @@ void gdt_install() {
 }
 
 void memory_init(multiboot_info_t* mbd) {
-  while (firstpf % 4096)
-    firstpf++;
   multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mbd->mmap_addr;
 
   kprintf("text: 0x%x\ndata: 0x%x\nbss : 0x%x\n", ktextend, kdataend,
@@ -86,7 +84,7 @@ void memory_init(multiboot_info_t* mbd) {
              (free_mem_stack[fms_ptr].address - KERNEL_LOAD_POINT));
       }
 
-      kprintf("FREE addr: %x leng: %x type: %d\n",
+      kprintf("FREE addr: %X leng: %X type: %d\n",
               free_mem_stack[fms_ptr].address, free_mem_stack[fms_ptr].length,
               free_mem_stack[fms_ptr].type);
       fms_ptr++;
@@ -96,7 +94,7 @@ void memory_init(multiboot_info_t* mbd) {
       used_mem_stack[ums_ptr].length = mmap->len;
       used_mem_stack[ums_ptr].type = 2;
 
-      kprintf("USED addr: %x leng: %x type %d\n",
+      kprintf("USED addr: %X leng: %X type %d\n",
               used_mem_stack[ums_ptr].address, used_mem_stack[ums_ptr].length,
               used_mem_stack[ums_ptr].type);
 
@@ -146,4 +144,12 @@ uint32_t pfa_push(uint32_t pushvalue) {
   map++;
   *map = pushvalue;
   return map;
+}
+
+pfptr_t alloc_pframe() {
+  return pfa_pop();
+}
+
+pfptr_t dealloc_pframe(pfptr_t pframe_address) {
+  return pfa_push(pframe_address);
 }
