@@ -4,12 +4,13 @@
 void init_serial() {
   outb(COMPORT + 1, 0x00);
   outb(COMPORT + 2, 0xC7);
-  outb(COMPORT + 3, inb(COMPORT + 3) & ~0b10000000); //set DLAB
+
+  outb(COMPORT + 3, inb(COMPORT + 3) | 0b10000000); //sets DLAB
 
   outb(COMPORT + 0, 0x01);
   outb(COMPORT + 1, 0x00); //set the baud rate to 115200 (no division)
 
-  outb(COMPORT + 3, inb(COMPORT + 3) | 0b10000000); //disable DLAB
+  outb(COMPORT + 3, inb(COMPORT + 3) & ~0b10000000); //disables DLAB
 
   outb(COMPORT + 2, 0x01);
   outb(COMPORT + 3, 0x03);
