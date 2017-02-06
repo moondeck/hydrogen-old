@@ -4,7 +4,7 @@
  * kernel I/O library
  */
 
- const char *version = "230117";
+ const char *version = "060217";
 
 void bootmsg(multiboot_info_t* mbd) {  // boot message and some info
 

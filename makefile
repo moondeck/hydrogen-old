@@ -16,6 +16,7 @@ kernel_x86:
 	@echo "[ ASM ]" $@
 	@$(AS) -f elf32 kernelld.asm -o kloaderasm.o
 	@$(AS) -f elf32 arch/i386/irq.asm -o irqasm.o
+	@$(AS) -f elf32 arch/i386/hwdetect.asm -o hwdetectasm.o
 
 	@echo "[ GCC ]" $@
 	@$(CC)	$(CFLAGS) -c arch/i386/serial.c -o serial.o
@@ -26,7 +27,7 @@ kernel_x86:
 	@$(CC)	$(CFLAGS) -c arch/i386/kbd.c -o kbd.o
 	@$(CC)	$(CFLAGS) -c arch/i386/io.c -o io.o
 	@$(CC)	$(CFLAGS) -c arch/i386/vmm.c -o vmm.o
-	#@$(CC)	$(CFLAGS) -c arch/i386/hwdetect.c -o hwdetect.o
+	@$(CC)	$(CFLAGS) -c arch/i386/hwdetect.c -o hwdetect.o
 
 	@$(CC)	$(CFLAGS) -c kernel/libc/kprintf.c -o kprintf.o
 	@$(CC)	$(CFLAGS) -c kernel/libc/libc.c -o libc.o
@@ -34,7 +35,7 @@ kernel_x86:
 
 	@echo "[ LINK ]" $@
 	@$(CC) -nostdlib -T kernel.ld -o kernel.elf kloaderasm.o kernel.o irqasm.o idt.o \
-	kbd.o memory.o serial.o irq.o kernelio.o io.o vmm.o libc.o kprintf.o -lgcc
+	kbd.o memory.o serial.o irq.o kernelio.o io.o vmm.o hwdetect.o hwdetectasm.o libc.o kprintf.o -lgcc
 
 clean:
 	rm -f kernel.elf *.o

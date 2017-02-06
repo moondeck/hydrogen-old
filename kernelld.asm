@@ -42,7 +42,7 @@ begin:
 	hlt                 ;halts the cpu
 
 id_page_kernel:
-  or ebx, 1
+  or ebx, 3
 
   mov [eax*4], ebx
   add ebx, 4096
@@ -54,7 +54,7 @@ id_page_kernel:
 id_page_kernel2:
   mov ebx, 0x00000000
   mov esi, 0x00000000
-  or esi, 1
+  or esi, 3
 
   mov [eax*4], esi
   inc eax
@@ -70,7 +70,7 @@ id_page_kernel2:
   
 
   mov eax, cr0
-  or eax, 0x80000000
+  or eax, 0x80010000
   mov cr0, eax
   ret
 

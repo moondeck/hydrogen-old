@@ -127,7 +127,7 @@ uint32_t pfa_init() {
     while(temp.address < (free_mem_stack[fms_ptr].address + free_mem_stack[fms_ptr].length)) {
 
       temp.address += PAGE_SIZE;
-      kprintf("address: %x to address: %x\n",temp.address,map);
+      //kprintf("address: %x to address: %x\n",temp.address,map);
 
       map++;
       *map = temp.address;
