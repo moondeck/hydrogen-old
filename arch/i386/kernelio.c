@@ -29,26 +29,22 @@ void haltcpu(void) {
   asm("hlt");
 }
 
-void halt_system_err(
-    char* err) {  // critical error, stops the system, until its restarted
+void panic(char* err) {  // critical error, stops the system, until its restarted
 
-  unsigned int eax, ebx, ecx, edx;
+  unsigned int eax, ebx, ecx, edx
+              ,esi, edi;
 
-  kprintf("\n\n\n[!!!     CRITICAL ERROR    !!!] \n\n");
-  kprintf("cause: %s\n", err);
+  kprintf("\n|==== kernel panic ====|\n");
+  kprintf(" cause: %s\n", err);
   asm("cli");  // disable interrupts so we dont get INTERRUPTED! (duh)
 
   asm("nop" : "=a"(eax));
-  kprintf("EAX: 0x%x\n", eax);
-
   asm("nop" : "=b"(ebx));
-  kprintf("EBX: 0x%x\n", ebx);
-
   asm("nop" : "=c"(ecx));
-  kprintf("ECX: 0x%x\n", ecx);
-
   asm("nop" : "=d"(edx));
-  kprintf("EDX: 0x%x\n", edx);
-
+  asm("nop" : "=S"(esi));
+  asm("nop" : "=D"(edi));
+  kprintf(" eax:0x%x\n ebx:0x%x\n ecx:0x%x\n edx:0x%x\n esi:0x%x\n edi:0x%x\n", eax, ebx, ecx, edx, esi, edi);
+  kprintf("\n|======================|");
   asm("hlt");
 }

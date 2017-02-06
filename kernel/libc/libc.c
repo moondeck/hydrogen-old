@@ -9,7 +9,7 @@ void memcpy(uint32_t *src,uint32_t *dest,uint32_t length) {
   }
 }
 
-void *mset(unsigned char *dest, unsigned char val,
+void memset(unsigned char *dest, unsigned char val,
            uint32_t count) {  // mset function, sets count addresses starting from
                          // *dest to val
   for (uint32_t counter = 0; counter != count; counter++) {
@@ -19,7 +19,7 @@ void *mset(unsigned char *dest, unsigned char val,
   return 0;
 }
 
-char *itoa(uint32_t value, char *str, uint32_t base) {  // code taken from OSDev wiki
+char *itoa(int32_t value, char *str, uint32_t base) {  // code taken from OSDev wiki
   char *rc;
   char *ptr;
   char *low;
@@ -55,7 +55,7 @@ char *itoa(uint32_t value, char *str, uint32_t base) {  // code taken from OSDev
   return rc;
 }
 
-char *ltoa(uint64_t value, char *str, uint32_t base) {  // code taken from OSDev wiki
+char *ltoa(int64_t value, char *str, uint32_t base) {  // code taken from OSDev wiki
   char *rc;
   char *ptr;
   char *low;

@@ -22,10 +22,15 @@ struct gdt_ptr {
 };
 
 struct multiboot_entry {
-  uint64_t address;
-  uint64_t length;
+  uint32_t address;
+  uint32_t length;
   uint32_t type;
-}__attribute__((packed));
+};
+
+struct memory_reg_mark {
+  uint32_t MAGIC;
+  uint32_t nextptr;
+};
 
 struct gdt_entry gdt[3];
 struct gdt_ptr gp;
@@ -37,6 +42,8 @@ uint32_t ums_ptr = 0;
 
 uint32_t firstpf = (uint32_t)&kernel_end;
 uint32_t *map = 0;
+
+uint32_t *kmalloc_ptr = 0;
 
 void _add_gdt_entry(int num,
                     uint32_t base,
@@ -72,29 +79,29 @@ void memory_init(multiboot_info_t* mbd) {
 
   while (mmap < (multiboot_memory_map_t*)(mbd->mmap_addr + mbd->mmap_length) &&
   mmap->size == 20) {
-    if (mmap->type == 1 && mmap->addr > 0x10000) {
-      free_mem_stack[fms_ptr].address = mmap->addr;
-      free_mem_stack[fms_ptr].length = mmap->len;
-      free_mem_stack[fms_ptr].type = mmap->type;
+    if (mmap->type == 1 && mmap->addr > 0x100000 - 1) {
+      free_mem_stack[fms_ptr].address = (uint32_t) mmap->addr;
+      free_mem_stack[fms_ptr].length = (uint32_t) mmap->len;
+      free_mem_stack[fms_ptr].type = (uint32_t) mmap->type;
 
       if (free_mem_stack[fms_ptr].address == KERNEL_LOAD_POINT) {
-        free_mem_stack[fms_ptr].address = firstpf;
+        free_mem_stack[fms_ptr].address = PFA_STACK_POINTER + 0x400000;
         free_mem_stack[fms_ptr].length =
             (free_mem_stack[fms_ptr].length -
              (free_mem_stack[fms_ptr].address - KERNEL_LOAD_POINT));
       }
 
-      kprintf("FREE addr: %X leng: %X type: %d\n",
+      kprintf("FREE addr: %x leng: %x type: %d\n",
               free_mem_stack[fms_ptr].address, free_mem_stack[fms_ptr].length,
               free_mem_stack[fms_ptr].type);
       fms_ptr++;
 
     } else {
-      used_mem_stack[ums_ptr].address = mmap->addr;
-      used_mem_stack[ums_ptr].length = mmap->len;
+      used_mem_stack[ums_ptr].address = (uint32_t) mmap->addr;
+      used_mem_stack[ums_ptr].length = (uint32_t) mmap->len;
       used_mem_stack[ums_ptr].type = 2;
 
-      kprintf("USED addr: %X leng: %X type %d\n",
+      kprintf("USED addr: %x leng: %x type %d\n",
               used_mem_stack[ums_ptr].address, used_mem_stack[ums_ptr].length,
               used_mem_stack[ums_ptr].type);
 
@@ -119,7 +126,8 @@ uint32_t pfa_init() {
 
     while(temp.address < (free_mem_stack[fms_ptr].address + free_mem_stack[fms_ptr].length)) {
 
-      temp.address += 4096;
+      temp.address += PAGE_SIZE;
+      kprintf("address: %x to address: %x\n",temp.address,map);
 
       map++;
       *map = temp.address;
@@ -132,15 +140,17 @@ uint32_t pfa_init() {
 }
 
 uint32_t pfa_pop() {
-  if(map < PFA_STACK_POINTER) halt_system_err("PFA stack empty!");
+  if(map < PFA_STACK_POINTER) panic("PFA stack empty!");
   uint32_t return_val = *map;
+  memset(*map, 0x00, PAGE_SIZE);
   *map = 0;
   map--;
+  kprintf("popping page frame with addr: %x\n",return_val);
   return return_val;
 }
 
 uint32_t pfa_push(uint32_t pushvalue) {
-  if(map == PFA_STACK_POINTER + 0x400000) halt_system_err("PFA stack overflow!"); //max 32 bit pfa stack size
+  if(map == PFA_STACK_POINTER + 0x400000) panic("PFA stack overflow!"); //max 32 bit pfa stack size
   map++;
   *map = pushvalue;
   return map;

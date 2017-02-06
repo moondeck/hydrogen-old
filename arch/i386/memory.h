@@ -3,8 +3,10 @@
 #include "../../kernel/libc/libc.h"
 #include "../../kernel/libc/kprintf.h"
 
+#define PAGE_SIZE 4096
 #define KERNEL_LOAD_POINT 0x100000
 #define PFA_STACK_POINTER 0x120000
+#define MEM_REGLIST (PFA_STACK_POINTER + 0x400000)
 
 typedef uint32_t pfptr_t;
 

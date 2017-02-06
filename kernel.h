@@ -10,6 +10,7 @@
   #include "arch/i386/irq.h"
   #include "arch/i386/serial.h"
   #include "arch/i386/multiboot.h"
+  #include "arch/i386/vmm.h"
 
 #endif
 

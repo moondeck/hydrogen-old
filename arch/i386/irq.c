@@ -40,7 +40,7 @@ void PIC2_mask_irq(unsigned irq_mask) {
 }
 
 
-void div_by_0(void) { halt_system_err("division by 0"); }
+void div_by_0(void) { panic("division by 0"); }
 
 void pit_isr(void) {
   //kout("PIT interrupt\n");

@@ -25,7 +25,7 @@ void initkbd();
 void kin(char *kintext);
 void outb(u16int port, u8int value);
 void outw(u16int port, u16int value);
-void halt_system_err(char *err);
+void panic(char* err);
 void bootmsg(multiboot_info_t *mbd);
 unsigned char inb(unsigned short port);
 unsigned short inw(unsigned short port);
