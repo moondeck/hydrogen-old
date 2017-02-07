@@ -17,6 +17,7 @@ kernel_x86:
 	@$(AS) -f elf32 kernelld.asm -o kloaderasm.o
 	@$(AS) -f elf32 arch/i386/irq.asm -o irqasm.o
 	@$(AS) -f elf32 arch/i386/hwdetect.asm -o hwdetectasm.o
+	@$(AS) -f elf32 arch/i386/vmm.asm -o vmmasm.o
 
 	@echo "[ GCC ]" $@
 	@$(CC)	$(CFLAGS) -c arch/i386/serial.c -o serial.o
@@ -35,7 +36,7 @@ kernel_x86:
 
 	@echo "[ LINK ]" $@
 	@$(CC) -nostdlib -T kernel.ld -o kernel.elf kloaderasm.o kernel.o irqasm.o idt.o \
-	kbd.o memory.o serial.o irq.o kernelio.o io.o vmm.o hwdetect.o hwdetectasm.o libc.o kprintf.o -lgcc
+	kbd.o memory.o serial.o irq.o kernelio.o io.o vmm.o vmmasm.o hwdetect.o hwdetectasm.o libc.o kprintf.o -lgcc
 
 clean:
 	rm -f kernel.elf *.o

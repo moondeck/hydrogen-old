@@ -142,7 +142,7 @@ uint32_t pfa_init() {
 uint32_t pfa_pop() {
   if(map < PFA_STACK_POINTER) panic("PFA stack empty!");
   uint32_t return_val = *map;
-  memset(*map, 0x00, PAGE_SIZE);
+  memset(map, 0x00, PAGE_SIZE);
   *map = 0;
   map--;
   kprintf("popping page frame with addr: %x\n",return_val);

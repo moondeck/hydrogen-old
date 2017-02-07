@@ -21,6 +21,9 @@ void kmain(multiboot_info_t *mbd_ptr) {
 
   pfa_init();
   cpuid(0x110000, 0x110020);
+  alloc_pframe();
+
+  init_paging();
   while (1) {
     brk();
   }
