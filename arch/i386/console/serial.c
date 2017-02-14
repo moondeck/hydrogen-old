@@ -1,5 +1,5 @@
-#include "serial.h"
-
+#include <arch/i386/console/serial.h>
+#include <arch/i386/io/io.h>
 
 void init_serial() {
   outb(COMPORT + 1, 0x00);

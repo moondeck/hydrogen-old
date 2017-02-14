@@ -1,4 +1,5 @@
-#include "kbd.h"
+#include <arch/i386/kbd/kbd.h>
+#include <arch/i386/io/kernelio.h>
 
 void initkbd() {
   char KBD_DATA_var;

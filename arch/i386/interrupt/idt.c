@@ -1,4 +1,7 @@
-#include "idt.h"
+#include <arch/i386/interrupt/idt.h>
+#include <arch/i386/io/kernelio.h>
+#include <stdint.h>
+
 
 struct idt_entry {
   uint16_t base_low;

@@ -14,25 +14,25 @@ kernel_x86:
 	clear
 
 	@echo "[ ASM ]" $@
-	@$(AS) -f elf32 kernelld.asm -o kloaderasm.o
-	@$(AS) -f elf32 arch/i386/irq.asm -o irqasm.o
-	@$(AS) -f elf32 arch/i386/hwdetect.asm -o hwdetectasm.o
-	@$(AS) -f elf32 arch/i386/vmm.asm -o vmmasm.o
+	@$(AS) -f elf32 kernelld.asm 											-o kloaderasm.o
+	@$(AS) -f elf32 arch/i386/interrupt/irq.asm 							-o irqasm.o
+	@$(AS) -f elf32 arch/i386/hwid/hwdetect.asm 							-o hwdetectasm.o
+	@$(AS) -f elf32 arch/i386/vmm/vmm.asm 									-o vmmasm.o
 
 	@echo "[ GCC ]" $@
-	@$(CC)	$(CFLAGS) -c arch/i386/serial.c -o serial.o
-	@$(CC)	$(CFLAGS) -c arch/i386/kernelio.c -o kernelio.o
-	@$(CC)	$(CFLAGS) -c arch/i386/idt.c -o idt.o
-	@$(CC)	$(CFLAGS) -c arch/i386/memory.c -o memory.o
-	@$(CC)	$(CFLAGS) -c arch/i386/irq.c -o irq.o
-	@$(CC)	$(CFLAGS) -c arch/i386/kbd.c -o kbd.o
-	@$(CC)	$(CFLAGS) -c arch/i386/io.c -o io.o
-	@$(CC)	$(CFLAGS) -c arch/i386/vmm.c -o vmm.o
-	@$(CC)	$(CFLAGS) -c arch/i386/hwdetect.c -o hwdetect.o
+	@$(CC)	$(CFLAGS) -c arch/i386/console/serial.c 	-I include			-o serial.o
+	@$(CC)	$(CFLAGS) -c arch/i386/io/kernelio.c 		-I include			-o kernelio.o
+	@$(CC)	$(CFLAGS) -c arch/i386/interrupt/idt.c 		-I include			-o idt.o
+	@$(CC)	$(CFLAGS) -c arch/i386/memory/memory.c 		-I include			-o memory.o
+	@$(CC)	$(CFLAGS) -c arch/i386/interrupt/irq.c 		-I include			-o irq.o
+	@$(CC)	$(CFLAGS) -c arch/i386/kbd/kbd.c 			-I include			-o kbd.o
+	@$(CC)	$(CFLAGS) -c arch/i386/io/io.c 				-I include 			-o io.o
+	@$(CC)	$(CFLAGS) -c arch/i386/vmm/vmm.c 			-I include 			-o vmm.o
+	@$(CC)	$(CFLAGS) -c arch/i386/hwid/hwdetect.c 		-I include 			-o hwdetect.o
 
-	@$(CC)	$(CFLAGS) -c kernel/libc/kprintf.c -o kprintf.o
-	@$(CC)	$(CFLAGS) -c kernel/libc/libc.c -o libc.o
-	@$(CC)	$(CFLAGS) -c kernel.c -o kernel.o
+	@$(CC)	$(CFLAGS) -c kernel/libc/kprintf.c			-I include			-o kprintf.o
+	@$(CC)	$(CFLAGS) -c kernel/libc/libc.c 			-I include			-o libc.o
+	@$(CC)	$(CFLAGS) -c kernel.c 						-I include			-o kernel.o
 
 	@echo "[ LINK ]" $@
 	@$(CC) -nostdlib -T kernel.ld -o kernel.elf kloaderasm.o kernel.o irqasm.o idt.o \

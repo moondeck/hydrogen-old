@@ -1,4 +1,8 @@
-#include "memory.h"
+#include <arch/i386/memory/memory.h>
+#include <arch/i386/io/kernelio.h>
+#include <arch/i386/memory/multiboot.h>
+#include <libc/libc.h>
+#include <libc/kprintf.h>
 
 uint32_t kstart_addr = (uint32_t)&kernel_start;
 uint32_t ktextend = (uint32_t)&text_end;

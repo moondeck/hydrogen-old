@@ -1,4 +1,4 @@
-#include "io.h"
+#include <arch/i386/io/io.h>
 
 void outb(unsigned short port, unsigned char value) {  // 8bit port output
   asm volatile("outb %1, %0" : : "dN"(port), "a"(value));

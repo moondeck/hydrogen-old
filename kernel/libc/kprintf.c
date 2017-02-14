@@ -1,4 +1,4 @@
-#include "kprintf.h"
+#include <libc/kprintf.h>
 
 int kprintf(const char *format, ... ) {
     va_list parameters;

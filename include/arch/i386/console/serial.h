@@ -1,5 +1,3 @@
-#include "io.h"
-
 #define COM1 0x3F8
 #define COMPORT COM1
 

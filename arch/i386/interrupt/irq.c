@@ -1,5 +1,6 @@
-#include "kernelio.h"
-#include "idt.h"
+#include <arch/i386/io/kernelio.h>
+#include <arch/i386/console/serial.h>
+#include <arch/i386/interrupt/irq.h>
 
 #define PIC_A 0x20
 #define PIC_B 0xA0

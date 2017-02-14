@@ -1,6 +1,3 @@
-#include "kernelio.h"
-#include "../../kernel/libc/libc.h"
-
 #include <stdint.h>
 
 void idt_isr_gate(uint8_t interrupt, uint8_t flags, uint8_t selector, uint32_t address);

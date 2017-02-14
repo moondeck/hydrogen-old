@@ -1,18 +1,30 @@
-#include "kernelio.h"
+#include <arch/i386/io/kernelio.h>
+#include <arch/i386/memory/multiboot.h>
+#include <libc/libc.h>
+#include <libc/kprintf.h>
+#include <stdint.h>
 
 /*
  * kernel I/O library
  */
 
- const char *version = "060217";
+#define version 201702
 
 void bootmsg(multiboot_info_t* mbd) {  // boot message and some info
 
   if (mbd->cmdline != 0) {
-    kprintf("\nbooting command line: %s\n", (char*)mbd->cmdline);
+    kprintf("\nbooting command line: %s\n", (char*) mbd->cmdline);
   }
 
-  kprintf("welcome to hydrogen\n\n");
+  kprintf("        ___    __    \n");
+  kprintf("       /  /   /  /   \n");
+  kprintf("      /  /   /  /    \n");
+  kprintf("     /  /___/  /     \n");
+  kprintf("    /  ____   /      \n");
+  kprintf("   /  /   /  /       \n");
+  kprintf("  /__/   /__/        \n");
+
+  kprintf("\nhydrogen operating system booting\n");
   kprintf("(C) Copyright 2015-2017 Moondeck\n");
   kprintf("Licensed under the Apache License, Version 2.0\n\n");
   kprintf("version %s pre-alpha\n", version);

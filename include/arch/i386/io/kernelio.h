@@ -1,11 +1,4 @@
-#include "../../kernel/libc/libc.h"
-#include "../../kernel/libc/kprintf.h"
-
-#ifdef __i386__
-    #include "multiboot.h"
-#endif
-
-#include <stdint.h>
+#include <arch/i386/memory/multiboot.h>
 
 typedef unsigned int u32int;
 typedef int s32int;

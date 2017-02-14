@@ -1,4 +1,5 @@
-#include "vmm.h"
+#include <arch/i386/vmm/vmm.h>
+#include <arch/i386/memory/memory.h>
 
 struct pt {
     uint32_t page_tab_entry[1024];

@@ -1,7 +1,5 @@
-#include "kernelio.h"
-#include "multiboot.h"
-#include "../../kernel/libc/libc.h"
-#include "../../kernel/libc/kprintf.h"
+#include <stdint.h>
+#include <arch/i386/memory/multiboot.h>
 
 #define PAGE_SIZE 4096
 #define KERNEL_LOAD_POINT 0x100000
