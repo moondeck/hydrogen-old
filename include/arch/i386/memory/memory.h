@@ -22,3 +22,7 @@ void gdt_set_gate(int num, unsigned long base, unsigned long limit,
 extern void gdt_flush();
 void memory_init(multiboot_info_t *mbd);
 uint32_t pfa_init();
+uint32_t pfa_pop();
+uint32_t pfa_push(uint32_t pushvalue);
+pfptr_t alloc_pframe();
+pfptr_t dealloc_pframe(pfptr_t pframe_address);

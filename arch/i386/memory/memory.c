@@ -120,7 +120,7 @@ void memory_init(multiboot_info_t* mbd) {
 }
 
 uint32_t pfa_init() {
-  map = PFA_STACK_POINTER;
+  map = (uint32_t*) PFA_STACK_POINTER;
   fms_ptr = 0;
   struct multiboot_entry temp;
 
@@ -140,13 +140,13 @@ uint32_t pfa_init() {
     kprintf("addrwrite: %x addr: %x\n",temp.address,map);
     fms_ptr++;
   }
-  return map;
+  return (uint32_t) map;
 }
 
 uint32_t pfa_pop() {
-  if(map < PFA_STACK_POINTER) panic("PFA stack empty!");
+  if(PFA_STACK_POINTER > (uint32_t) map) panic("PFA stack empty!");
   uint32_t return_val = *map;
-  memset(map, 0x00, PAGE_SIZE);
+  memset((unsigned char*) map, 0x00, PAGE_SIZE);
   *map = 0;
   map--;
   kprintf("popping page frame with addr: %x\n",return_val);
@@ -154,10 +154,10 @@ uint32_t pfa_pop() {
 }
 
 uint32_t pfa_push(uint32_t pushvalue) {
-  if(map == PFA_STACK_POINTER + 0x400000) panic("PFA stack overflow!"); //max 32 bit pfa stack size
+  if(map == (uint32_t*) PFA_STACK_POINTER + 0x400000) panic("PFA stack overflow!"); //max 32 bit pfa stack size
   map++;
   *map = pushvalue;
-  return map;
+  return (uint32_t) map;
 }
 
 pfptr_t alloc_pframe() {
