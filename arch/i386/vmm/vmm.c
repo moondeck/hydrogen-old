@@ -47,7 +47,10 @@ void init_paging(void) {
     kprintf("current dir:%x\n",(uint32_t) current_dir);
     uint32_t addr = 0;
 
-    for(addr = 0;addr != 0x800000; addr++) map_pv(addr,addr);
+    for(addr = 0;addr != 0x800000; addr++) {
+        kprintf("addr = %x\n",addr);
+        map_pv(addr,addr);
+    }
 
     load_cr3((uint32_t) current_dir);
 
