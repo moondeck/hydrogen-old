@@ -157,7 +157,7 @@ uint32_t pfa_push(uint32_t pushvalue) {
   if(map == (uint32_t*) PFA_STACK_POINTER + 0x400000) panic("PFA stack overflow!"); //max 32 bit pfa stack size
   map++;
   *map = pushvalue;
-  return (uint32_t) map;
+  return (uint32_t) map & 0xFFFFF000;
 }
 
 pfptr_t alloc_pframe() {
