@@ -3,12 +3,7 @@ AS = nasm
 CC = i686-elf-gcc
 LD = i686-elf-ld
 
-CFLAGS = -ffreestanding -Wall -Wextra
-
-RED = \033[0;31m
-GREEN = \033[0;32m
-YELLOW = \033[1;33m
-CLEAR = \033[0m
+CFLAGS = -ffreestanding -Wall -Wextra -g
 
 kernel_x86:
 	clear
@@ -35,7 +30,7 @@ kernel_x86:
 	@$(CC)	$(CFLAGS) -c kernel.c 						-I include			-o kernel.o
 
 	@echo "[ LINK ]" $@
-	@$(CC) -nostdlib -T kernel.ld -o kernel.elf kloaderasm.o kernel.o irqasm.o idt.o \
+	@$(CC) -g -nostdlib -T kernel.ld -o kernel.elf kloaderasm.o kernel.o irqasm.o idt.o \
 	kbd.o memory.o serial.o irq.o kernelio.o io.o vmm.o vmmasm.o hwdetect.o hwdetectasm.o libc.o kprintf.o -lgcc
 
 clean:

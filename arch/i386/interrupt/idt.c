@@ -35,6 +35,7 @@ void idt_install(){
   idtp.base = (uint32_t) &idt;
   idtp.size = sizeof(idt);
 
+  idt_isr_gate(0x0E,0b1000,0x08,(uint32_t) &exception_0x0E);
   idt_isr_gate(0x20,0b1000,0x08,(uint32_t) &interrupt_0x20);
   idt_isr_gate(0x21,0b1000,0x08,(uint32_t) &interrupt_0x21);
   idt_isr_gate(0x24,0b1000,0x08,(uint32_t) &interrupt_0x24);

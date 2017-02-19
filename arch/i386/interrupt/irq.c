@@ -58,3 +58,7 @@ void com1_isr(void) {
   kout_char(inb(COMPORT));
   outb(PIC_A, PIC_ENDOFINT);
 }
+
+void page_fault(void) {
+  panic("Yep, that's a page fault!");
+}

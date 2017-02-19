@@ -41,13 +41,13 @@ begin:
 	cli
 	hlt                 ;halts the cpu
 
-id_page_kernel:
-  or ebx, 3
+id_page_kernel:       ;written some time ago, i have no idea how this even works
+  or ebx, 3           ;present, rw flag
 
   mov [eax*4], ebx
   add ebx, 4096
   inc eax
-  cmp eax, 2048
+  cmp eax, 4096
   je id_page_kernel2
   jmp id_page_kernel
 
@@ -56,6 +56,14 @@ id_page_kernel2:
   mov esi, 0x00000000
   or esi, 3
 
+  mov [eax*4], esi
+  inc eax
+
+  add esi, 0x1000
+  mov [eax*4], esi
+  inc eax
+
+  add esi, 0x1000
   mov [eax*4], esi
   inc eax
 
@@ -77,7 +85,7 @@ id_page_kernel2:
   
 
 id_page_base dd 0x000000
-id_page_blocks db 0x02 ;we only need 2 blocks, as 2x1024x4096 = 8 megs
+id_page_blocks db 0x04 ;we only need 2 blocks, as 2x1024x4096 = 8 megs
 
 gdt_flush:            ;enables GDT
     lgdt [gp+2]
