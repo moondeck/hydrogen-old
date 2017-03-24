@@ -17,20 +17,19 @@ void init_serial() {
   outb(COMPORT + 4, 0x01);
 }
 
-void kout_char(char koutchar) {  // outputs a character to serial
-  outb(COM1, koutchar);
-}
-
 char serial_io_wait() {
   while (!(inb(COMPORT + 5) & 0x20));
   return 1;
 }
 
+void kout_char(char koutchar) {  // outputs a character to serial
+  serial_io_wait();
+  outb(COM1, koutchar);
+}
+
 void kout(char *koutstring) {  // outputs a string (char array) to serial
 
   while (*koutstring != 0) {
-
-    serial_io_wait();
 
       if (*koutstring == '\n') {
         kout_char('\r');
@@ -39,6 +38,7 @@ void kout(char *koutstring) {  // outputs a string (char array) to serial
 
       } else {
         kout_char(*koutstring);
+        __asm__("movl %eax,%eax");
         koutstring++;
       }
   }

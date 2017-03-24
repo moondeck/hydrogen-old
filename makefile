@@ -1,3 +1,4 @@
+#TODO rework the retarded makefile please
 
 AS = nasm
 CC = i686-elf-gcc
@@ -30,11 +31,11 @@ kernel_x86:
 	@$(CC)	$(CFLAGS) -c arch/i386/kernel.c 										-I include			-o kernel.o
 
 	@echo "[ LINK ]" $@
-	@$(CC) -g -nostdlib -T arch/i386/kernel.ld -o kernel.elf kloaderasm.o kernel.o irqasm.o idt.o \
+	@$(CC) -g -nostdlib -T arch/i386/kernel.ld -o hydrogen kloaderasm.o kernel.o irqasm.o idt.o \
 	kbd.o memory.o serial.o irq.o kernelio.o io.o vmm.o vmmasm.o hwdetect.o hwdetectasm.o libc.o kprintf.o -lgcc
 
 clean:
-	rm -f kernel.elf *.o
+	rm -f hydrogen *.o
 
 install:
 	echo "You wish you could install it like that"
