@@ -45,7 +45,7 @@ begin:
 
   call id_page_kernel ;
 
-	;call kmain          ;calls the main kernel function in kernel.c
+	call kmain          ;calls the main kernel function in kernel.c
 	cli
 	hlt                 ;halts the cpu
 
@@ -55,7 +55,7 @@ id_page_kernel:       ;i have no idea how this even works
   add eax, 4
   add ebx, 0x1000
   cmp esi, 0x04
-  je id_page_kernel
+  jne id_page_kernel
 
   mov eax, 0x00601000
   mov ebx, 0x00000003
@@ -82,8 +82,6 @@ cr3load:
   mov cr0, eax
 
   ret
-
-
 
 
 gdt_flush:            ;enables GDT

@@ -88,8 +88,8 @@ void memory_init(multiboot_info_t* mbd) {
       free_mem_stack[fms_ptr].length = (uint32_t) mmap->len;
       free_mem_stack[fms_ptr].type = (uint32_t) mmap->type;
 
-      if (free_mem_stack[fms_ptr].address == KERNEL_LOAD_POINT) {
-        free_mem_stack[fms_ptr].address = PFA_STACK_POINTER + 0x400000;
+      if (free_mem_stack[fms_ptr].address == KERNEL_LOAD_POINT && free_mem_stack[fms_ptr].length > 0xEFF000) {
+        free_mem_stack[fms_ptr].address = 0xFFF000;               //fixed memory for now, its a hack, it should be fixed
         free_mem_stack[fms_ptr].length =
             (free_mem_stack[fms_ptr].length -
              (free_mem_stack[fms_ptr].address - KERNEL_LOAD_POINT));

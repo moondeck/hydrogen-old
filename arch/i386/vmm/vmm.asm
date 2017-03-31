@@ -3,8 +3,8 @@
 global load_cr3
 
 load_cr3:
-    mov eax, [ebp + 8]
+    mov edx, 0x600000 ;[ebp  + 8]
 
-    mov cr3, eax
+    mov cr3, edx
 
     ret

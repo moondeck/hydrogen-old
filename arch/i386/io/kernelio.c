@@ -33,7 +33,7 @@ void haltcpu(void) {
   asm("hlt");
 }
 
-void panic(char* err) {  // critical error, stops the system, until its restarted
+void panic(char* err) {  // TODO: make a better one that also dumps the stack
 
   unsigned int eax, ebx, ecx, edx
               ,esi, edi;

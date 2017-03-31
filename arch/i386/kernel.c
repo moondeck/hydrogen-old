@@ -26,11 +26,8 @@ void kmain(multiboot_info_t *mbd_ptr) {
   //printf("high leaf %x\n", test );
   //brk();
 
-  /*init_paging();
-  brk();
-  uint32_t *page_fault_should_not_happen = 0xFFFFFC;
-  *page_fault_should_not_happen = 0xdeadbeef;
-  kprintf("%x\n",(int) *page_fault_should_not_happen );*/
+  init_paging();
+  map_pv(0x1FFF000, 0x1FFFF00);
   while (1) {
     brk();
   }
