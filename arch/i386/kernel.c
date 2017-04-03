@@ -21,13 +21,9 @@ void kmain(multiboot_info_t *mbd_ptr) {
   memory_init(mbd_ptr);
 
   pfa_init();
-  //cpuid(0x110000, 0x110010);
-  //int test = get_hileaf();
-  //printf("high leaf %x\n", test );
-  //brk();
 
   init_paging();
-  map_pv(0x1FFF000, 0x1FFFF00);
+  
   while (1) {
     brk();
   }

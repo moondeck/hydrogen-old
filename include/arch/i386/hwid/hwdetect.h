@@ -1,5 +1,5 @@
 #include <stdint.h>
-
+#include <libc/kprintf.h>
 
 enum {
   CPUID_FPU     = (1 << 0),
@@ -36,12 +36,6 @@ enum {
   CPUID_PBE     = (1 << 31)
 };
 
-struct cpuid_string {
- char cpuid_char[12]
-};
 
-struct cpuid_brands {
-  char cpuid_brand[48]
-};
-
-void cpuid(struct cpuid_string *cpuid_ptr, struct cpuid_brands *cpuid_brand_ptr);
+uint32_t cpuid(char *cpuid_ptr);
+uint32_t identify_cpu(uint32_t pointer);

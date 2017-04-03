@@ -1,15 +1,16 @@
 #include <libc/libc.h>
 
-uint32_t memcpy(uint32_t *src,uint32_t *dest,uint32_t length) {
+uint32_t memcpy(uint8_t *src,uint8_t *dest,uint32_t length) {
   uint32_t count = 0;
   for (count = 0; count != length; count++) {
     *dest = *src;
     src++;
     dest++;
   }
+  return 0;
 }
 
-uint32_t memset(uint32_t *dest, uint8_t val,
+uint32_t memset(uint8_t *dest, uint8_t val,
            uint32_t count) {  // mset function, sets count addresses starting from
                          // *dest to val
   for (uint32_t counter = 0; counter != count; counter++) {

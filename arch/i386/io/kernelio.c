@@ -21,6 +21,7 @@ void bootmsg(multiboot_info_t* mbd) {  // boot message and some info
   kprintf("Licensed under the Apache License, Version 2.0\n\n");
   kprintf("version %s pre-alpha\n", version);
   kprintf("loaded by: %s\n", (char*)mbd->boot_loader_name);
+  kprintf("multiboot structures at:%x\n", (uint32_t) mbd);
 }
 
 void brk(void) {

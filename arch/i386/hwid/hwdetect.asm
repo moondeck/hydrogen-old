@@ -18,6 +18,9 @@ identify_cpu:
     inc esi
     mov eax, 0x00
     mov [esi], eax
+    add esi, 4
+    
+    cpuid           ;dont mov eax into anywhere, since eax is the return value
 
     ret
 
