@@ -31,11 +31,6 @@ struct multiboot_entry {
   uint32_t type;
 };
 
-struct memory_reg_mark {
-  uint32_t MAGIC;
-  uint32_t nextptr;
-};
-
 struct gdt_entry gdt[3];
 struct gdt_ptr gp;
 

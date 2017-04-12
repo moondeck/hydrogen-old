@@ -13,28 +13,35 @@ uint32_t get_virt_mapoffset(uint32_t PDIR_index) {
     return PSTRUCTURE_VIRT + (PDIR_index * 0x1000);
 }
 
-uint32_t map_pv(uint32_t virt, uint32_t phys) {
+uint32_t map_pv(uint32_t virt, uint32_t phys, uint8_t flags) {
     uint32_t pd_index = (virt >> 22);
     uint32_t pt_index = (virt >> 12 );
     
 
 
-    if(page_dir[pd_index]) {    //is the entry there?
-        kprintf("page tab is there\n");
-        *page_tab = get_virt_mapoffset(pd_index);  //if yes, just map it
-    } else {                                    //if its not, do:
-        kprintf("page tab not there, allocating\n");
+    if(page_dir[pd_index]) {                        //is the entry there?
+        *page_tab = get_virt_mapoffset(pd_index);   //if yes, just map it
+    } else {                                        //if its not, do:
         page_dir[pd_index] = alloc_pframe();
         page_dir[pd_index] |= 3;
         *page_tab = get_virt_mapoffset(pd_index);
         memset((uint8_t *) get_virt_mapoffset(pd_index), 0, PAGE_SIZE);
     }
-    kprintf("page tab address: %x\n", get_virt_mapoffset(pd_index));
-    kprintf("mapping physical address %x to virtual %x , thats gonna be offset %x\n", phys, virt, pt_index);
 
-    page_tab[pt_index] = (phys & 0xFFFFF000) | 3;
+    page_tab[pt_index] = (phys & 0xFFFFF000) | (flags << 1) | 1;    //flags shifted by 1, since 
 
     load_cr3((uint32_t) PDIR_PHYS);
+    return 0;
+}
+
+uint32_t unmap_pv(uint32_t virt) {
+    uint32_t pd_index = (virt >> 22);
+    uint32_t pt_index = (virt >> 12);
+
+    page_tab[pt_index] = 0; //un-present
+    invlpg(virt);   //invalidate tlb
+    load_cr3((uint32_t) PDIR_PHYS); //reload cr3
+
     return 0;
 }
 
@@ -43,6 +50,10 @@ void init_paging(void) {
     page_dir[1023] = PDIR_PHYS | 3;
     load_cr3((uint32_t) PDIR_PHYS);
     page_dir = (uint32_t *) PDIR_VIRT;
+    uint32_t kernel_ro_section_end = (uint32_t) &data_end;
+    for(uint32_t kernel_area_variable = 0x100000; kernel_area_variable < kernel_ro_section_end; kernel_area_variable += 4096){
+        map_pv(kernel_area_variable, kernel_area_variable, 0);
+    }
 }
 
 inline void invlpg(uint32_t addr) {

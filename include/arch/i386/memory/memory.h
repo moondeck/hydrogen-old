@@ -8,11 +8,11 @@
 
 typedef uint32_t pfptr_t;
 
-extern int kernel_start;
-extern int kernel_end;
-extern int text_end;
-extern int data_end;
-extern int bss_end;
+extern void kernel_start;
+extern void kernel_end;
+extern void text_end;
+extern void data_end;
+extern void bss_end;
 
 extern uint32_t firstpf;
 

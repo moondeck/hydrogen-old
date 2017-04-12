@@ -1,0 +1,5 @@
+This directory will contain SPARC-specific files. This is the next planned architecture for Hydrogen.
+To be done:
+    Need to get a SPARC machine (probably a server, donations welcome)
+    Write CPU support so that it boots (maybe YOU can?)
+    Add peripheral support

@@ -1,0 +1,5 @@
+This directory will contain ARM-specific files. This is the next planned architecture for Hydrogen after SPARC.
+To be done:
+    Need to get a ARM machine (probably a *Pi, donations welcome)
+    Write CPU support so that it boots (maybe YOU can?)
+    Add peripheral support
